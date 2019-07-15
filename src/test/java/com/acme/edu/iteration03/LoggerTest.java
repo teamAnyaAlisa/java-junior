@@ -12,14 +12,10 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //region given
     @Before
     public void setUpSystemOut() throws IOException {
-        resetOut();
+
         captureSysout();
     }
 
-    @After
-    public void tearDown() {
-        resetOut();
-    }
     //endregion
 
     /*
@@ -112,4 +108,8 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
 
     */
+    @After
+    public void tearDown() {
+        resetOut();
+    }
 }
