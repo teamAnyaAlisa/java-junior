@@ -20,6 +20,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @After
     public void tearDown() {
         resetOut();
+        Logger.flush();
     }
     //endregion
 
@@ -27,8 +28,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogInteger() throws IOException {
         //region when
         Logger.log(1);
+        Logger.flush();
         Logger.log(0);
+        Logger.flush();
         Logger.log(-1);
+        Logger.flush();
         //endregion
 
         //region then

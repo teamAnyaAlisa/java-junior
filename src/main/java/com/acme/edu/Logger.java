@@ -2,32 +2,38 @@ package com.acme.edu;
 
 public class Logger {
     private static String primitivePrefix = "primitive: ";
+    private static int sumOfInts = 0;
 
-    private static void logPrint(String message) {
+    private static void printLogToConsole(String message) {
         System.out.println(message);
     }
 
     public static void log(int message) {
-        logPrint(primitivePrefix + message);
+        sumOfInts += message;
     }
 
     public static void log(byte message) {
-        logPrint(primitivePrefix + message);
+        printLogToConsole(primitivePrefix + message);
     }
 
     public static void log(char message) {
-        logPrint("char: " + message);
+        printLogToConsole("char: " + message);
     }
 
     public static void log(String message) {
-        logPrint("string: " + message);
+        printLogToConsole("string: " + message);
     }
 
     public static void log(boolean message) {
-        logPrint(primitivePrefix + message);
+        printLogToConsole(primitivePrefix + message);
     }
 
     public static void log(Object message) {
-        logPrint("reference: " + message);
+        printLogToConsole("reference: " + message);
+    }
+
+    public static void flush() {
+        printLogToConsole(primitivePrefix + sumOfInts);
+        sumOfInts = 0;
     }
 }
