@@ -12,36 +12,58 @@ public class Logger {
         System.out.println(message);
     }
 
-    public static void log(int message) {
-        if (state != null && !state.equals("int")) {
+    private static void isStateChanged(String newState) {
+        if (state != null && !state.equals(newState)) {
             flush();
-        }
-        state = "int";
-        if (Integer.MAX_VALUE - sumOfInts < message) {
-            int intLeft = Integer.MAX_VALUE - sumOfInts;
-            sumOfInts = Integer.MAX_VALUE;
-            flush();
-            state = "int";
-            sumOfInts = message - intLeft;
-        } else {
-            sumOfInts += message;
         }
     }
 
-    public static void log(byte message) {
-        if (state != null && !state.equals("byte")) {
-            flush();
+    private static boolean isTypeOverflowed(int maxTypeValue,
+                                            int currentTypeSum,
+                                            int message,
+                                            setMaxTypeValueToTypeSum changeTypeSum) {
+        if (maxTypeValue - currentTypeSum >= message) return false;
+
+        changeTypeSum.apply();
+        flush();
+        return true;
+    }
+
+    public static void log(int message) {
+        isStateChanged("int");
+        int possibleIntLeft = Integer.MAX_VALUE - sumOfInts;
+        if (isTypeOverflowed(Integer.MAX_VALUE, sumOfInts, message,
+                                () -> {sumOfInts = Integer.MAX_VALUE;})) {
+            sumOfInts = message - possibleIntLeft;
+        } else {
+            sumOfInts += message;
         }
-        state = "byte";
-        if (Byte.MAX_VALUE - sumOfBytes < message) {
-            int byteLeft = Byte.MAX_VALUE - sumOfBytes;
-            sumOfBytes = Byte.MAX_VALUE;
-            flush();
-            state = "byte";
-            sumOfBytes = message - byteLeft;
+        state = "int";
+    }
+
+    public static void log(byte message) {
+        isStateChanged("byte");
+        int possibleByteLeft = Byte.MAX_VALUE - sumOfBytes;
+        if (isTypeOverflowed(Byte.MAX_VALUE, sumOfBytes, message,
+                () -> {sumOfBytes = Byte.MAX_VALUE;})) {
+            sumOfBytes = message - possibleByteLeft;
         } else {
             sumOfBytes += message;
         }
+        state = "byte";
+    }
+
+    private static String arrayMessageToString(int[] message) {
+        StringBuilder result = new StringBuilder("{");
+        for (int index = 0; index < message.length-1; index++) {
+            result.append(String.valueOf(message[index])).append(", ");
+        }
+        result.append(message[message.length-1]).append("}");
+        return result.toString();
+    }
+
+    public static void log(int[] message) {
+        printLogToConsole("primitives array: " + arrayMessageToString(message));
     }
 
     public static void log(char message) {
@@ -49,9 +71,7 @@ public class Logger {
     }
 
     public static void log(String message) {
-        if (state != null && !state.equals("string")) {
-            flush();
-        }
+        isStateChanged("string");
         state = "string";
         if (lastSavedString.equals("")) {
             lastSavedString = message;
@@ -97,4 +117,9 @@ public class Logger {
             case "byte": flushByte(); state = null; break;
         }
     }
+}
+
+@FunctionalInterface
+interface setMaxTypeValueToTypeSum {
+    void apply();
 }
