@@ -20,7 +20,6 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @After
     public void tearDown() {
         resetOut();
-        Logger.flush();
     }
     //endregion
 
@@ -45,8 +44,11 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogByte() throws IOException {
         //region when
         Logger.log((byte)1);
+        Logger.flush();
         Logger.log((byte)0);
+        Logger.flush();
         Logger.log((byte)-1);
+        Logger.flush();
         //endregion
 
         //region then
@@ -78,7 +80,9 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     public void shouldLogString() throws IOException {
         //region when
         Logger.log("test string 1");
+        Logger.flush();
         Logger.log("other str");
+        Logger.flush();
         //endregion
 
         //region then
