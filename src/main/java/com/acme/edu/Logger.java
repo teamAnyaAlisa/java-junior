@@ -13,7 +13,7 @@ public class Logger {
     }
 
     public static void log(int message) {
-        if (state != null && state != "int") {
+        if (state != null && !state.equals("int")) {
             flush();
         }
         state = "int";
@@ -29,7 +29,7 @@ public class Logger {
     }
 
     public static void log(byte message) {
-        if (state != null && state != "byte") {
+        if (state != null && !state.equals("byte")) {
             flush();
         }
         state = "byte";
@@ -49,13 +49,13 @@ public class Logger {
     }
 
     public static void log(String message) {
-        if (state != null && state != "string") {
+        if (state != null && !state.equals("string")) {
             flush();
         }
         state = "string";
-        if (lastSavedString == "") {
+        if (lastSavedString.equals("")) {
             lastSavedString = message;
-        }else if (message != lastSavedString) {
+        }else if (!message.equals(lastSavedString)) {
             flush();
             lastSavedString = message;
         }
