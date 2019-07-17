@@ -6,13 +6,13 @@ public class Logger {
     private static int sumOfBytes = 0;
     private static int repeatSavedStringNumber = 0;
     private static String lastSavedString = "";
-    private static String state = null;
+    private static LoggerState state = null;
 
     private static void printLogToConsole(String message) {
         System.out.println(message);
     }
 
-    private static void isStateChanged(String newState) {
+    private static void isStateChanged(LoggerState newState) {
         if (state != null && !state.equals(newState)) {
             flush();
         }
@@ -30,7 +30,7 @@ public class Logger {
     }
 
     public static void log(int message) {
-        isStateChanged("int");
+        isStateChanged(LoggerState.INT);
         int possibleIntLeft = Integer.MAX_VALUE - sumOfInts;
         if (isTypeOverflowed(Integer.MAX_VALUE, sumOfInts, message,
                                 () -> {sumOfInts = Integer.MAX_VALUE;})) {
@@ -38,11 +38,11 @@ public class Logger {
         } else {
             sumOfInts += message;
         }
-        state = "int";
+        state = LoggerState.INT;
     }
 
     public static void log(byte message) {
-        isStateChanged("byte");
+        isStateChanged(LoggerState.BYTE);
         int possibleByteLeft = Byte.MAX_VALUE - sumOfBytes;
         if (isTypeOverflowed(Byte.MAX_VALUE, sumOfBytes, message,
                 () -> {sumOfBytes = Byte.MAX_VALUE;})) {
@@ -50,7 +50,7 @@ public class Logger {
         } else {
             sumOfBytes += message;
         }
-        state = "byte";
+        state = LoggerState.BYTE;
     }
 
     private static String arrayMessageToString(int[] message) {
@@ -71,8 +71,8 @@ public class Logger {
     }
 
     public static void log(String message) {
-        isStateChanged("string");
-        state = "string";
+        isStateChanged(LoggerState.STRING);
+        state = LoggerState.STRING;
         if (lastSavedString.equals("")) {
             lastSavedString = message;
         }else if (!message.equals(lastSavedString)) {
@@ -112,9 +112,9 @@ public class Logger {
 
     public static void flush() {
         switch (state) {
-            case "int": flushInt(); state = null; break;
-            case "string": flushString(); state = null; break;
-            case "byte": flushByte(); state = null; break;
+            case INT: flushInt(); state = null; break;
+            case STRING: flushString(); state = null; break;
+            case BYTE: flushByte(); state = null; break;
         }
     }
 }
