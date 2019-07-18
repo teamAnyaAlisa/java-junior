@@ -1,5 +1,7 @@
 package com.acme.edu;
 
+import com.acme.edu.saver.LogConsoleSaver;
+
 public class Logger {
     private static String primitivePrefix = "primitive: ";
     private static int sumOfInts = 0;

@@ -1,0 +1,14 @@
+package com.acme.edu.command;
+
+public class BooleanCommand implements Command {
+    private boolean message;
+
+    BooleanCommand(boolean message) {
+        this.message = message;
+    }
+
+    @Override
+    public String getDecoratedString() {
+        return "primitive: " + this.message;
+    }
+}

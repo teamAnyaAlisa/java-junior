@@ -1,4 +1,6 @@
-package com.acme.edu;
+package com.acme.edu.command;
+
+import com.acme.edu.command.Command;
 
 public class IntCommand implements Command {
     private int message = 0;
@@ -12,12 +14,7 @@ public class IntCommand implements Command {
     }
 
     @Override
-    public String decorateMessage() {
-        return "primitive: ";
-    }
-
-    @Override
-    public String getLogString() {
-        return decorateMessage() + this.message;
+    public String getDecoratedString() {
+        return "primitive: " + this.message;
     }
 }

@@ -1,4 +1,6 @@
-package com.acme.edu;
+package com.acme.edu.saver;
+
+import com.acme.edu.saver.LogSaver;
 
 public class LogConsoleSaver implements LogSaver {
     @Override
