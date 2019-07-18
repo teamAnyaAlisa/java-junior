@@ -7,10 +7,7 @@ public class Logger {
     private static int repeatSavedStringNumber = 0;
     private static String lastSavedString = "";
     private static LoggerState state = null;
-
-    private static void printLogToConsole(String message) {
-        System.out.println(message);
-    }
+    private static LoggerController loggerController = new LoggerController(new LogConsoleSaver());
 
     private static void isStateChanged(LoggerState newState) {
         if (state != null && !state.equals(newState)) {
@@ -63,11 +60,11 @@ public class Logger {
     }
 
     public static void log(int[] message) {
-        printLogToConsole("primitives array: " + arrayMessageToString(message));
+        loggerController.log("primitives array: " + arrayMessageToString(message));
     }
 
     public static void log(char message) {
-        printLogToConsole("char: " + message);
+        loggerController.log("char: " + message);
     }
 
     public static void log(String message) {
@@ -83,28 +80,28 @@ public class Logger {
     }
 
     public static void log(boolean message) {
-        printLogToConsole(primitivePrefix + message);
+        loggerController.log(primitivePrefix + message);
     }
 
     public static void log(Object message) {
-        printLogToConsole("reference: " + message);
+        loggerController.log("reference: " + message);
     }
 
     private static void flushInt() {
-        printLogToConsole(primitivePrefix + sumOfInts);
+        loggerController.log(primitivePrefix + sumOfInts);
         sumOfInts = 0;
     }
 
     private static void flushByte() {
-        printLogToConsole(primitivePrefix + sumOfBytes);
+        loggerController.log(primitivePrefix + sumOfBytes);
         sumOfBytes = 0;
     }
 
     private static void flushString() {
         if (repeatSavedStringNumber == 1) {
-            printLogToConsole("string: " + lastSavedString);
+            loggerController.log("string: " + lastSavedString);
         } else if (repeatSavedStringNumber > 1) {
-            printLogToConsole("string: " + lastSavedString + " (x" + repeatSavedStringNumber + ")");
+            loggerController.log("string: " + lastSavedString + " (x" + repeatSavedStringNumber + ")");
         }
         lastSavedString = "";
         repeatSavedStringNumber = 0;
