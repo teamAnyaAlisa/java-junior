@@ -1,5 +1,5 @@
 package com.acme.edu;
-
+/*
 public class LoggerState {
     private static int sumOfInts = 0;
     private static int sumOfBytes = 0;
@@ -55,4 +55,8 @@ public class LoggerState {
     }
 }
 
+*/
 
+public enum LoggerState {
+    INT, BYTE, STRING, BOOLEAN, OBJECT, CHAR
+}
