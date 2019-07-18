@@ -1,5 +1,6 @@
 package com.acme.edu;
 
+import com.acme.edu.command.*;
 import com.acme.edu.saver.LogConsoleSaver;
 
 public class Logger {
@@ -11,12 +12,6 @@ public class Logger {
     private static LoggerState state = null;
     private static LoggerController loggerController = new LoggerController(new LogConsoleSaver());
 
-    private static void isStateChanged(LoggerState newState) {
-        if (state != null && !state.equals(newState)) {
-            flush();
-        }
-    }
-
     private static boolean isTypeOverflowed(int maxTypeValue,
                                             int currentTypeSum,
                                             int message,
@@ -24,32 +19,30 @@ public class Logger {
         if (maxTypeValue - currentTypeSum >= message) return false;
 
         changeTypeSum.apply();
-        flush();
+//        flush();
         return true;
     }
 
     public static void log(int message) {
-        isStateChanged(LoggerState.INT);
-        int possibleIntLeft = Integer.MAX_VALUE - sumOfInts;
-        if (isTypeOverflowed(Integer.MAX_VALUE, sumOfInts, message,
-                                () -> {sumOfInts = Integer.MAX_VALUE;})) {
-            sumOfInts = message - possibleIntLeft;
-        } else {
-            sumOfInts += message;
-        }
-        state = LoggerState.INT;
+        loggerController.log(new IntCommand(message));
+//        int possibleIntLeft = Integer.MAX_VALUE - sumOfInts;
+//        if (isTypeOverflowed(Integer.MAX_VALUE, sumOfInts, message,
+//                                () -> {sumOfInts = Integer.MAX_VALUE;})) {
+//            sumOfInts = message - possibleIntLeft;
+//        } else {
+//            sumOfInts += message;
+//        }
     }
 
     public static void log(byte message) {
-        isStateChanged(LoggerState.BYTE);
-        int possibleByteLeft = Byte.MAX_VALUE - sumOfBytes;
-        if (isTypeOverflowed(Byte.MAX_VALUE, sumOfBytes, message,
-                () -> {sumOfBytes = Byte.MAX_VALUE;})) {
-            sumOfBytes = message - possibleByteLeft;
-        } else {
-            sumOfBytes += message;
-        }
-        state = LoggerState.BYTE;
+        loggerController.log(new ByteCommand(message));
+//        int possibleByteLeft = Byte.MAX_VALUE - sumOfBytes;
+//        if (isTypeOverflowed(Byte.MAX_VALUE, sumOfBytes, message,
+//                () -> {sumOfBytes = Byte.MAX_VALUE;})) {
+//            sumOfBytes = message - possibleByteLeft;
+//        } else {
+//            sumOfBytes += message;
+//        }
     }
 
     private static String arrayMessageToString(int[] message) {
@@ -66,55 +59,23 @@ public class Logger {
     }
 
     public static void log(char message) {
-        loggerController.log("char: " + message);
+        loggerController.log(new CharCommand(message));
     }
 
     public static void log(String message) {
-        isStateChanged(LoggerState.STRING);
-        state = LoggerState.STRING;
-        if (lastSavedString.equals("")) {
-            lastSavedString = message;
-        }else if (!message.equals(lastSavedString)) {
-            flush();
-            lastSavedString = message;
-        }
-        repeatSavedStringNumber += 1;
+        loggerController.log(new StringCommand(message));
     }
 
     public static void log(boolean message) {
-        loggerController.log(primitivePrefix + message);
+        loggerController.log(new BooleanCommand(message));
     }
 
     public static void log(Object message) {
-        loggerController.log("reference: " + message);
-    }
-
-    private static void flushInt() {
-        loggerController.log(primitivePrefix + sumOfInts);
-        sumOfInts = 0;
-    }
-
-    private static void flushByte() {
-        loggerController.log(primitivePrefix + sumOfBytes);
-        sumOfBytes = 0;
-    }
-
-    private static void flushString() {
-        if (repeatSavedStringNumber == 1) {
-            loggerController.log("string: " + lastSavedString);
-        } else if (repeatSavedStringNumber > 1) {
-            loggerController.log("string: " + lastSavedString + " (x" + repeatSavedStringNumber + ")");
-        }
-        lastSavedString = "";
-        repeatSavedStringNumber = 0;
+        loggerController.log(new ObjectCommand(message));
     }
 
     public static void flush() {
-        switch (state) {
-            case INT: flushInt(); state = null; break;
-            case STRING: flushString(); state = null; break;
-            case BYTE: flushByte(); state = null; break;
-        }
+        loggerController.flush();
     }
 }
 

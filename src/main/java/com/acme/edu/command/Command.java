@@ -1,5 +1,11 @@
 package com.acme.edu.command;
 
 public interface Command {
-    public String getDecoratedString();
+    String getDecoratedString();
+
+    boolean equals(Command message);
+
+    boolean isAccumulatable();
+
+    void accumulate(Command message);
 }

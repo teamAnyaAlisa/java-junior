@@ -5,16 +5,27 @@ import com.acme.edu.command.Command;
 public class IntCommand implements Command {
     private int message = 0;
 
-    IntCommand(int message) {
+    public IntCommand(int message) {
         this.message = message;
-    }
-
-    public int getMessage() {
-        return message;
     }
 
     @Override
     public String getDecoratedString() {
         return "primitive: " + this.message;
+    }
+
+    @Override
+    public boolean equals(Command message) {
+        return message instanceof IntCommand;
+    }
+
+    @Override
+    public boolean isAccumulatable() {
+        return true;
+    }
+
+    @Override
+    public void accumulate(Command message) {
+        this.message += ((IntCommand) message).message;
     }
 }

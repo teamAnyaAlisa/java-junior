@@ -92,7 +92,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         //endregion
     }
 
-    */
+
     @Test
     public void shouldCorrectDealWithIntegerOverflowWhenOneMethodCall() throws IOException {
         //region when
@@ -110,9 +110,10 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
         assertSysoutContains("1");
         //endregion
     }
-
+*/
     @After
     public void tearDown() {
         resetOut();
+        Logger.flush();
     }
 }
