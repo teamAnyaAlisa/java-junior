@@ -16,14 +16,4 @@ public class BooleanCommand implements Command {
     public boolean equals(Command message) {
         return message instanceof BooleanCommand;
     }
-
-    @Override
-    public boolean isAccumulatable() {
-        return false;
-    }
-
-    @Override
-    public void accumulate(Command message) {
-
-    }
 }

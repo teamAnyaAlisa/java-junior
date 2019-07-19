@@ -16,16 +16,6 @@ public class ObjectCommand implements Command {
 
     @Override
     public boolean equals(Command message) {
-        return false;
-    }
-
-    @Override
-    public boolean isAccumulatable() {
-        return false;
-    }
-
-    @Override
-    public void accumulate(Command message) {
-
+        return message instanceof ObjectCommand;
     }
 }

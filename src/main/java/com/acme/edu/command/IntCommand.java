@@ -2,7 +2,7 @@ package com.acme.edu.command;
 
 import com.acme.edu.command.Command;
 
-public class IntCommand implements Command {
+public class IntCommand extends AccumulatableCommand {
     private int message = 0;
 
     public IntCommand(int message) {
@@ -20,12 +20,13 @@ public class IntCommand implements Command {
     }
 
     @Override
-    public boolean isAccumulatable() {
-        return true;
-    }
+    public Command accumulate(Command message) {
+        if (Integer.MAX_VALUE - this.message < ((IntCommand) message).message) {
+            this.message = ((IntCommand) message).message - (Integer.MAX_VALUE - this.message);
+            return new IntCommand(Integer.MAX_VALUE);
+        }
 
-    @Override
-    public void accumulate(Command message) {
         this.message += ((IntCommand) message).message;
+        return null;
     }
 }

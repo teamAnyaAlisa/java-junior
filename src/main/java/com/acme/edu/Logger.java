@@ -4,24 +4,8 @@ import com.acme.edu.command.*;
 import com.acme.edu.saver.LogConsoleSaver;
 
 public class Logger {
-    private static String primitivePrefix = "primitive: ";
-    private static int sumOfInts = 0;
-    private static int sumOfBytes = 0;
-    private static int repeatSavedStringNumber = 0;
-    private static String lastSavedString = "";
-    private static LoggerState state = null;
     private static LoggerController loggerController = new LoggerController(new LogConsoleSaver());
 
-    private static boolean isTypeOverflowed(int maxTypeValue,
-                                            int currentTypeSum,
-                                            int message,
-                                            setMaxTypeValueToTypeSum changeTypeSum) {
-        if (maxTypeValue - currentTypeSum >= message) return false;
-
-        changeTypeSum.apply();
-//        flush();
-        return true;
-    }
 
     public static void log(int message) {
         loggerController.log(new IntCommand(message));
@@ -36,13 +20,6 @@ public class Logger {
 
     public static void log(byte message) {
         loggerController.log(new ByteCommand(message));
-//        int possibleByteLeft = Byte.MAX_VALUE - sumOfBytes;
-//        if (isTypeOverflowed(Byte.MAX_VALUE, sumOfBytes, message,
-//                () -> {sumOfBytes = Byte.MAX_VALUE;})) {
-//            sumOfBytes = message - possibleByteLeft;
-//        } else {
-//            sumOfBytes += message;
-//        }
     }
 
     private static String arrayMessageToString(int[] message) {
@@ -77,9 +54,4 @@ public class Logger {
     public static void flush() {
         loggerController.flush();
     }
-}
-
-@FunctionalInterface
-interface setMaxTypeValueToTypeSum {
-    void apply();
 }

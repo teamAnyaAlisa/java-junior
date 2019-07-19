@@ -2,8 +2,8 @@ package com.acme.edu.command;
 
 import com.acme.edu.command.Command;
 
-public class ByteCommand implements Command {
-    private byte message = 0;
+public class ByteCommand extends AccumulatableCommand {
+    private int message = 0;
 
     public ByteCommand(byte message) {
         this.message = message;
@@ -20,12 +20,13 @@ public class ByteCommand implements Command {
     }
 
     @Override
-    public boolean isAccumulatable() {
-        return true;
-    }
+    public Command accumulate(Command message) {
+        if (Byte.MAX_VALUE - this.message < ((ByteCommand) message).message) {
+            this.message = ((ByteCommand) message).message - (Byte.MAX_VALUE - this.message);
+            return new ByteCommand(Byte.MAX_VALUE);
+        }
 
-    @Override
-    public void accumulate(Command message) {
         this.message += ((ByteCommand) message).message;
+        return null;
     }
 }

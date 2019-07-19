@@ -1,6 +1,6 @@
 package com.acme.edu.command;
 
-public class StringCommand implements Command {
+public class StringCommand extends AccumulatableCommand {
     private String message;
     private int repetitionMessageCounter = 1;
 
@@ -24,12 +24,8 @@ public class StringCommand implements Command {
     }
 
     @Override
-    public boolean isAccumulatable() {
-        return true;
-    }
-
-    @Override
-    public void accumulate(Command message) {
+    public Command accumulate(Command message) {
         repetitionMessageCounter += 1;
+        return null;
     }
 }
