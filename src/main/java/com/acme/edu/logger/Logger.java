@@ -1,4 +1,4 @@
-package com.acme.edu;
+package com.acme.edu.logger;
 
 import com.acme.edu.command.*;
 import com.acme.edu.saver.LogConsoleSaver;
@@ -6,16 +6,8 @@ import com.acme.edu.saver.LogConsoleSaver;
 public class Logger {
     private static LoggerController loggerController = new LoggerController(new LogConsoleSaver());
 
-
     public static void log(int message) {
         loggerController.log(new IntCommand(message));
-//        int possibleIntLeft = Integer.MAX_VALUE - sumOfInts;
-//        if (isTypeOverflowed(Integer.MAX_VALUE, sumOfInts, message,
-//                                () -> {sumOfInts = Integer.MAX_VALUE;})) {
-//            sumOfInts = message - possibleIntLeft;
-//        } else {
-//            sumOfInts += message;
-//        }
     }
 
     public static void log(byte message) {

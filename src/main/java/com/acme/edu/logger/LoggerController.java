@@ -1,4 +1,4 @@
-package com.acme.edu;
+package com.acme.edu.logger;
 
 import com.acme.edu.command.AccumulatableCommand;
 import com.acme.edu.command.Command;
