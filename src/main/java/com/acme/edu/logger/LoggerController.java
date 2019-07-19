@@ -1,16 +1,12 @@
 package com.acme.edu.logger;
 
-import com.acme.edu.command.AccumulatableCommand;
 import com.acme.edu.command.Command;
+import com.acme.edu.saver.LogConsoleSaver;
 import com.acme.edu.saver.LogSaver;
 
 public class LoggerController {
-    private final LogSaver saver;
     private Command currentMessage = null;
-
-    LoggerController(LogSaver saver) {
-        this.saver = saver;
-    }
+    private LogSaver saver = new LogConsoleSaver();
 
     // TODO спросить про момент сброса значения для неаккумулирующих типов
     public void log(Command message) {
@@ -19,6 +15,9 @@ public class LoggerController {
             return;
         }
 
+        currentMessage = currentMessage.save(message);
+
+        /*
         if (currentMessage.equals(message) && (currentMessage instanceof AccumulatableCommand)) {
             Command messageToFlush = ((AccumulatableCommand) currentMessage).accumulate(message);
             if (messageToFlush != null) {
@@ -28,12 +27,14 @@ public class LoggerController {
             saver.save(currentMessage.getDecoratedString());
             currentMessage = message;
         }
+        */
     }
 
     public void log(String message) {
         saver.save(message);
     }
 
+    // TODO: подумать, как переместить flush() в Command
     public void flush() {
         if (currentMessage == null) return;
 

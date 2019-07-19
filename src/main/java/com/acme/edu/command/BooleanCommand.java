@@ -1,10 +1,14 @@
 package com.acme.edu.command;
 
+import com.acme.edu.saver.LogSaver;
+
 public class BooleanCommand implements Command {
     private boolean message;
+    private LogSaver saver;
 
-    public BooleanCommand(boolean message) {
+    public BooleanCommand(boolean message, LogSaver saver) {
         this.message = message;
+        this.saver = saver;
     }
 
     @Override
@@ -15,5 +19,15 @@ public class BooleanCommand implements Command {
     @Override
     public boolean equals(Command message) {
         return message instanceof BooleanCommand;
+    }
+
+    @Override
+    public Command save(Command message) {
+        saver.save(getDecoratedString());
+        return message;
+    }
+
+    @Override
+    public void accumulate(Command message) {
     }
 }

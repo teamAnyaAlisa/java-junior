@@ -1,12 +1,14 @@
 package com.acme.edu.command;
 
-import com.acme.edu.command.Command;
+import com.acme.edu.saver.LogSaver;
 
-public class ByteCommand extends AccumulatableCommand {
+public class ByteCommand implements Command {
     private int message = 0;
+    private LogSaver saver;
 
-    public ByteCommand(byte message) {
+    public ByteCommand(byte message, LogSaver saver) {
         this.message = message;
+        this.saver = saver;
     }
 
     @Override
@@ -20,13 +22,26 @@ public class ByteCommand extends AccumulatableCommand {
     }
 
     @Override
-    public Command accumulate(Command message) {
-        if (Byte.MAX_VALUE - this.message < ((ByteCommand) message).message) {
-            this.message = ((ByteCommand) message).message - (Byte.MAX_VALUE - this.message);
-            return new ByteCommand(Byte.MAX_VALUE);
+    public Command save(Command message) {
+        if (!equals(message)) {
+            saver.save(getDecoratedString());
+            return message;
         }
 
-        this.message += ((ByteCommand) message).message;
-        return null;
+        accumulate(message);
+        return this;
+    }
+
+    @Override
+    public void accumulate(Command message) {
+        int leftToTypeOverflow = Byte.MAX_VALUE - this.message;
+        int messageValue = ((ByteCommand) message).message;
+        if (leftToTypeOverflow < messageValue) {
+            this.message = messageValue - leftToTypeOverflow;
+            saver.save((new ByteCommand(Byte.MAX_VALUE, this.saver)).getDecoratedString());
+            return;
+        }
+
+        this.message += messageValue;
     }
 }

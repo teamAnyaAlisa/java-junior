@@ -1,11 +1,15 @@
 package com.acme.edu.command;
 
-public class StringCommand extends AccumulatableCommand {
+import com.acme.edu.saver.LogSaver;
+
+public class StringCommand implements Command {
     private String message;
     private int repetitionMessageCounter = 1;
+    private LogSaver saver;
 
-    public StringCommand(String message) {
+    public StringCommand(String message, LogSaver saver) {
         this.message = message;
+        this.saver = saver;
     }
 
     @Override
@@ -24,8 +28,18 @@ public class StringCommand extends AccumulatableCommand {
     }
 
     @Override
-    public Command accumulate(Command message) {
+    public Command save(Command message) {
+        if (!equals(message)) {
+            saver.save(getDecoratedString());
+            return message;
+        }
+
+        accumulate(message);
+        return this;
+    }
+
+    @Override
+    public void accumulate(Command message) {
         repetitionMessageCounter += 1;
-        return null;
     }
 }
