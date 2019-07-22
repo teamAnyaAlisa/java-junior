@@ -24,12 +24,16 @@ public class IntCommand implements Command {
     @Override
     public Command save(Command message) {
         if (!equals(message)) {
-            saver.save(getDecoratedString());
+            flush();
             return message;
         }
         
         accumulate(message);
         return this;
+    }
+
+    public int getMessage() {
+        return message;
     }
 
     @Override
@@ -43,5 +47,10 @@ public class IntCommand implements Command {
         }
 
         this.message += messageValue;
+    }
+
+    @Override
+    public void flush() {
+        saver.save(getDecoratedString());
     }
 }

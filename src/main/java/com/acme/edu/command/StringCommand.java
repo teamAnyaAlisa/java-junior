@@ -30,7 +30,7 @@ public class StringCommand implements Command {
     @Override
     public Command save(Command message) {
         if (!equals(message)) {
-            saver.save(getDecoratedString());
+            flush();
             return message;
         }
 
@@ -38,8 +38,17 @@ public class StringCommand implements Command {
         return this;
     }
 
+    public int getRepetitionMessageCounter() {
+        return repetitionMessageCounter;
+    }
+
     @Override
     public void accumulate(Command message) {
         repetitionMessageCounter += 1;
+    }
+
+    @Override
+    public void flush() {
+        saver.save(getDecoratedString());
     }
 }

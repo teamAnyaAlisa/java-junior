@@ -8,4 +8,6 @@ public interface Command {
     public Command save(Command message);
 
     void accumulate(Command message);
+
+    void flush();
 }

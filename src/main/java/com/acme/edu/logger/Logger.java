@@ -5,8 +5,8 @@ import com.acme.edu.saver.LogConsoleSaver;
 import com.acme.edu.saver.LogSaver;
 
 public class Logger {
-    private static LoggerController loggerController = new LoggerController();
     private static LogSaver logConsoleSaver = new LogConsoleSaver();
+    private static LoggerController loggerController = new LoggerController(logConsoleSaver);
 
     public static void log(int message) {
         loggerController.log(new IntCommand(message, logConsoleSaver));

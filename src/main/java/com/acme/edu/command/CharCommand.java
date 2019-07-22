@@ -24,11 +24,16 @@ public class CharCommand implements Command {
 
     @Override
     public Command save(Command message) {
-        saver.save(getDecoratedString());
+        flush();
         return message;
     }
 
     @Override
     public void accumulate(Command message) {
+    }
+
+    @Override
+    public void flush() {
+        saver.save(getDecoratedString());
     }
 }
