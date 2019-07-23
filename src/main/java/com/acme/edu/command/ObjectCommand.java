@@ -13,6 +13,10 @@ public class ObjectCommand implements Command {
         this.saver = saver;
     }
 
+    Object getMessage() {
+        return message;
+    }
+
     @Override
     public String getDecoratedString() {
         return "reference: " + this.message;

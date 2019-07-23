@@ -1,4 +1,4 @@
-package com.acme.edu.unitTests.CommandTests;
+package com.acme.edu.command;
 
 import com.acme.edu.command.BooleanCommand;
 import com.acme.edu.command.Command;
@@ -68,5 +68,15 @@ public class BooleanCommandTest {
         sut.flush();
 
         verify(saverStub).save(sut.getDecoratedString());
+    }
+
+    @Test
+    public void shouldHasNoSideEffectsWhenAccumulate() {
+        Command commandStub = mock(BooleanCommand.class);
+        boolean previousMessageStub = sut.getMessage();
+
+        sut.accumulate(commandStub);
+
+        assertThat(sut.getMessage()).isEqualTo(previousMessageStub);
     }
 }

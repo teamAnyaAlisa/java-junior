@@ -12,6 +12,10 @@ public class StringCommand implements Command {
         this.saver = saver;
     }
 
+    int getRepetitionMessageCounter() {
+        return repetitionMessageCounter;
+    }
+
     @Override
     public String getDecoratedString() {
         if (repetitionMessageCounter == 1) {
@@ -36,10 +40,6 @@ public class StringCommand implements Command {
 
         accumulate(message);
         return this;
-    }
-
-    public int getRepetitionMessageCounter() {
-        return repetitionMessageCounter;
     }
 
     @Override

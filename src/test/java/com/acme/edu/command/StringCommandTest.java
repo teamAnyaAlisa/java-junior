@@ -1,4 +1,4 @@
-package com.acme.edu.unitTests.CommandTests;
+package com.acme.edu.command;
 
 import com.acme.edu.command.Command;
 import com.acme.edu.command.IntCommand;
@@ -96,6 +96,16 @@ public class StringCommandTest {
         Command result = sut.save(commandStub);
 
         assertThat(result).isEqualTo(sut);
+    }
+
+    @Test
+    public void shouldCallAccumulateWhenSaveWithStringCommandWithSameMessage() {
+        String messageStub = "test string";
+        Command commandStub = new StringCommand(messageStub, saverStub);
+
+        sut.save(commandStub);
+
+        assertThat(sut.getRepetitionMessageCounter()).isEqualTo(2);
     }
 
     @Test

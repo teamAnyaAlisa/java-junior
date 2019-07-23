@@ -11,6 +11,10 @@ public class BooleanCommand implements Command {
         this.saver = saver;
     }
 
+    boolean getMessage() {
+        return message;
+    }
+
     @Override
     public String getDecoratedString() {
         return "primitive: " + this.message;

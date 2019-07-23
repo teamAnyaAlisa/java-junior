@@ -1,4 +1,4 @@
-package com.acme.edu.unitTests.LogSaverTests;
+package com.acme.edu.saver;
 
 import com.acme.edu.SysoutCaptureAndAssertionAbility;
 import com.acme.edu.saver.LogConsoleSaver;

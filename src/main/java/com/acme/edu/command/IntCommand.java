@@ -11,6 +11,10 @@ public class IntCommand implements Command {
         this.saver = saver;
     }
 
+    int getMessage() {
+        return message;
+    }
+
     @Override
     public String getDecoratedString() {
         return "primitive: " + this.message;
@@ -30,10 +34,6 @@ public class IntCommand implements Command {
         
         accumulate(message);
         return this;
-    }
-
-    public int getMessage() {
-        return message;
     }
 
     @Override

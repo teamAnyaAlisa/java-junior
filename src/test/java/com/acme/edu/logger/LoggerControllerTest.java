@@ -1,4 +1,4 @@
-package com.acme.edu.unitTests.LoggerControllerTests;
+package com.acme.edu.logger;
 
 import com.acme.edu.command.Command;
 import com.acme.edu.command.StringCommand;
@@ -60,6 +60,13 @@ public class LoggerControllerTest {
         sut.flush();
 
         verify(commandStub).flush();
+        assertThat(sut.getCurrentMessage()).isEqualTo(null);
+    }
+
+    @Test
+    public void shouldHasNoSideEffectsWhenFlushWithEmptyCurrentState() {
+        sut.flush();
+
         assertThat(sut.getCurrentMessage()).isEqualTo(null);
     }
 }

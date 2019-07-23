@@ -12,6 +12,10 @@ public class CharCommand implements Command {
         this.saver = saver;
     }
 
+    char getMessage() {
+        return message;
+    }
+
     @Override
     public String getDecoratedString() {
         return "char: " + this.message;
