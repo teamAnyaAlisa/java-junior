@@ -30,18 +30,18 @@ public class IntCommandTest {
 
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithIntCommand() {
-        Command stub = mock(IntCommand.class);
+        Command commandStub = mock(IntCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     public void shouldReturnFalseWhenEqualsCalledWithNotIntCommand() {
-        Command stub = mock(StringCommand.class);
+        Command commandStub = mock(StringCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
     }
@@ -59,9 +59,9 @@ public class IntCommandTest {
     // TODO: check call accumulate
     public void shouldReturnItselfWhenSaveWithIntCommand() {
         int messageStub = 1;
-        Command stub = new IntCommand(messageStub, saverStub);
+        Command commandStub = new IntCommand(messageStub, saverStub);
 
-        Command result = sut.save(stub);
+        Command result = sut.save(commandStub);
 
         assertThat(result).isEqualTo(sut);
     }
@@ -85,9 +85,9 @@ public class IntCommandTest {
     @Test
     public void shouldIncrementMessageWhenAccumulate() {
         int messageStub = 1;
-        Command stub = new IntCommand(messageStub, saverStub);
+        Command commandStub = new IntCommand(messageStub, saverStub);
 
-        sut.accumulate(stub);
+        sut.accumulate(commandStub);
 
         assertThat(sut.getMessage()).isEqualTo(2);
     }
@@ -95,14 +95,14 @@ public class IntCommandTest {
     @Test
     public void shouldCallSaverSaveAndIncrementMessageWhenAccumulate() {
         int messageStub1 = 5;
-        Command stub1 = new IntCommand(messageStub1, saverStub);
+        Command commandStub1 = new IntCommand(messageStub1, saverStub);
         int messageStub2 = Integer.MAX_VALUE;
-        Command stub2 = new IntCommand(messageStub2, saverStub);
+        Command commandStub2 = new IntCommand(messageStub2, saverStub);
 
-        sut.accumulate(stub1);
-        sut.accumulate(stub2);
+        sut.accumulate(commandStub1);
+        sut.accumulate(commandStub2);
 
-        verify(saverStub).save(stub2.getDecoratedString());
+        verify(saverStub).save(commandStub2.getDecoratedString());
         assertThat(sut.getMessage()).isEqualTo(6);
     }
 }

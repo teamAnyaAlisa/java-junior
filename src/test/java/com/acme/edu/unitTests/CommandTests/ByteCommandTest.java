@@ -30,18 +30,18 @@ public class ByteCommandTest {
 
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithByteCommand() {
-        Command stub = mock(ByteCommand.class);
+        Command commandStub = mock(ByteCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     public void shouldReturnFalseWhenEqualsCalledWithNotByteCommand() {
-        Command stub = mock(StringCommand.class);
+        Command commandStub = mock(StringCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
     }
@@ -59,9 +59,9 @@ public class ByteCommandTest {
     // TODO: check call accumulate
     public void shouldReturnItselfWhenSaveWithByteCommand() {
         byte messageStub = 1;
-        Command stub = new ByteCommand(messageStub, saverStub);
+        Command commandStub = new ByteCommand(messageStub, saverStub);
 
-        Command result = sut.save(stub);
+        Command result = sut.save(commandStub);
 
         assertThat(result).isEqualTo(sut);
     }
@@ -85,9 +85,9 @@ public class ByteCommandTest {
     @Test
     public void shouldIncrementMessageWhenAccumulate() {
         byte messageStub = 1;
-        Command stub = new ByteCommand(messageStub, saverStub);
+        Command commandStub = new ByteCommand(messageStub, saverStub);
 
-        sut.accumulate(stub);
+        sut.accumulate(commandStub);
 
         assertThat(sut.getMessage()).isEqualTo(2);
     }
@@ -95,14 +95,14 @@ public class ByteCommandTest {
     @Test
     public void shouldCallSaverSaveAndIncrementMessageWhenAccumulate() {
         byte messageStub1 = 5;
-        Command stub1 = new ByteCommand(messageStub1, saverStub);
+        Command commandStub1 = new ByteCommand(messageStub1, saverStub);
         byte messageStub2 = Byte.MAX_VALUE;
-        Command stub2 = new ByteCommand(messageStub2, saverStub);
+        Command commandStub2 = new ByteCommand(messageStub2, saverStub);
 
-        sut.accumulate(stub1);
-        sut.accumulate(stub2);
+        sut.accumulate(commandStub1);
+        sut.accumulate(commandStub2);
 
-        verify(saverStub).save(stub2.getDecoratedString());
+        verify(saverStub).save(commandStub2.getDecoratedString());
         assertThat(sut.getMessage()).isEqualTo(6);
     }
 }

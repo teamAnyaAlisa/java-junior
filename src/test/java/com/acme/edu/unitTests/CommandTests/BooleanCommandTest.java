@@ -29,18 +29,18 @@ public class BooleanCommandTest {
 
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithBooleanCommand() {
-        Command stub = mock(BooleanCommand.class);
+        Command commandStub = mock(BooleanCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     public void shouldReturnFalseWhenEqualsCalledWithNotBooleanCommand() {
-        Command stub = mock(StringCommand.class);
+        Command commandStub = mock(StringCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
     }

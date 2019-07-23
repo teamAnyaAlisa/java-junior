@@ -31,9 +31,9 @@ public class StringCommandTest {
     @Test
     public void shouldAddPrimitivePrefixAndCounterPostfixWhenGetDecoratedString() {
         String messageStub = "test string";
-        Command stub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub, saverStub);
 
-        sut.accumulate(stub);
+        sut.accumulate(commandStub);
         String result = sut.getDecoratedString();
 
         assertThat(result).contains("string: ");
@@ -43,9 +43,9 @@ public class StringCommandTest {
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithStringCommandWithSameMessage() {
         String messageStub = "test string";
-        Command stub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub, saverStub);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(true);
     }
@@ -53,18 +53,18 @@ public class StringCommandTest {
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithStringCommandWithAnotherMessage() {
         String messageStub = "test another string";
-        Command stub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub, saverStub);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
     }
 
     @Test
     public void shouldReturnFalseWhenEqualsCalledWithNotStringCommand() {
-        Command stub = mock(IntCommand.class);
+        Command commandStub = mock(IntCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
     }
@@ -91,9 +91,9 @@ public class StringCommandTest {
     // TODO: check call accumulate
     public void shouldReturnItselfWhenSaveWithStringCommandWithSameMessage() {
         String messageStub = "test string";
-        Command stub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub, saverStub);
 
-        Command result = sut.save(stub);
+        Command result = sut.save(commandStub);
 
         assertThat(result).isEqualTo(sut);
     }
@@ -108,9 +108,9 @@ public class StringCommandTest {
     @Test
     public void shouldIncrementRepetitionCounterWhenAccumulate() {
         String messageStub = "test string";
-        Command stub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub, saverStub);
 
-        sut.accumulate(stub);
+        sut.accumulate(commandStub);
 
         assertThat(sut.getRepetitionMessageCounter()).isEqualTo(2);
     }

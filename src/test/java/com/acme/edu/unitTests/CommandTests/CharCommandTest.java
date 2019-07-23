@@ -30,18 +30,18 @@ public class CharCommandTest {
 
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithCharCommand() {
-        Command stub = mock(CharCommand.class);
+        Command commandStub = mock(CharCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     public void shouldReturnFalseWhenEqualsCalledWithNotCharCommand() {
-        Command stub = mock(StringCommand.class);
+        Command commandStub = mock(StringCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
     }

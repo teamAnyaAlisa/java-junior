@@ -32,18 +32,18 @@ public class ObjectCommandTest {
 
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithObjectCommand() {
-        Command stub = mock(ObjectCommand.class);
+        Command commandStub = mock(ObjectCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(true);
     }
 
     @Test
     public void shouldReturnFalseWhenEqualsCalledWithNotObjectCommand() {
-        Command stub = mock(StringCommand.class);
+        Command commandStub = mock(StringCommand.class);
 
-        boolean result = sut.equals(stub);
+        boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
     }
