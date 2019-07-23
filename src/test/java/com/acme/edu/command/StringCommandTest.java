@@ -70,41 +70,23 @@ public class StringCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenSave() {
-        Command commandStub = mock(IntCommand.class);
-
-        sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-    }
-
-    @Test
-    public void shouldReturnInputCommandWhenSave() {
+    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() {
         Command commandStub = mock(IntCommand.class);
 
         Command result = sut.save(commandStub);
 
+        verify(saverStub).save(sut.getDecoratedString());
         assertThat(result).isEqualTo(commandStub);
     }
 
     @Test
-    // TODO: check call accumulate
-    public void shouldReturnItselfWhenSaveWithStringCommandWithSameMessage() {
+    public void shouldReturnItselfAndCallAccumulateWhenSaveWithStringCommandWithSameMessage() {
         String messageStub = "test string";
         Command commandStub = new StringCommand(messageStub, saverStub);
 
         Command result = sut.save(commandStub);
 
         assertThat(result).isEqualTo(sut);
-    }
-
-    @Test
-    public void shouldCallAccumulateWhenSaveWithStringCommandWithSameMessage() {
-        String messageStub = "test string";
-        Command commandStub = new StringCommand(messageStub, saverStub);
-
-        sut.save(commandStub);
-
         assertThat(sut.getRepetitionMessageCounter()).isEqualTo(2);
     }
 

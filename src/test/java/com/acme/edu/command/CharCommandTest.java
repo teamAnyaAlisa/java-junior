@@ -47,20 +47,12 @@ public class CharCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenSave() {
-        Command commandStub = mock(StringCommand.class);
-
-        sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-    }
-
-    @Test
-    public void shouldReturnInputCommandWhenSave() {
+    public void shouldCallSaverSaveAndReturnInputCommandWhenSave() {
         Command commandStub = mock(StringCommand.class);
 
         Command result = sut.save(commandStub);
 
+        verify(saverStub).save(sut.getDecoratedString());
         assertThat(result).isEqualTo(commandStub);
     }
 

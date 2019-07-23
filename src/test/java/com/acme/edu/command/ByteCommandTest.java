@@ -47,41 +47,24 @@ public class ByteCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenSave() {
+    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() {
         Command commandStub = mock(StringCommand.class);
 
-        sut.save(commandStub);
+        Command result = sut.save(commandStub);
 
         verify(saverStub).save(sut.getDecoratedString());
+        assertThat(result).isEqualTo(commandStub);
     }
 
     @Test
-    public void shouldReturnItselfWhenSaveWithByteCommand() {
+    public void shouldReturnItselfAndCallAccumulateWhenSaveWithByteCommand() {
         byte messageStub = 1;
         Command commandStub = new ByteCommand(messageStub, saverStub);
 
         Command result = sut.save(commandStub);
 
         assertThat(result).isEqualTo(sut);
-    }
-
-    @Test
-    public void shouldCallAccumulateWhenSaveWithByteCommand() {
-        byte messageStub = 1;
-        Command commandStub = new ByteCommand(messageStub, saverStub);
-
-        sut.save(commandStub);
-
         assertThat(sut.getMessage()).isEqualTo(2);
-    }
-
-    @Test
-    public void shouldReturnInputCommandWhenSave() {
-        Command commandStub = mock(StringCommand.class);
-
-        Command result = sut.save(commandStub);
-
-        assertThat(result).isEqualTo(commandStub);
     }
 
     @Test
@@ -92,7 +75,7 @@ public class ByteCommandTest {
     }
 
     @Test
-    public void shouldIncrementMessageWhenAccumulate() {
+    public void shouldIncrementMessageWhenAccumulateWithoutByteOverflow() {
         byte messageStub = 1;
         Command commandStub = new ByteCommand(messageStub, saverStub);
 
@@ -102,7 +85,7 @@ public class ByteCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulate() {
+    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithByteOverflow() {
         byte messageStub1 = 5;
         Command commandStub1 = new ByteCommand(messageStub1, saverStub);
         byte messageStub2 = Byte.MAX_VALUE;

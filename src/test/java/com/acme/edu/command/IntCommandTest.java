@@ -47,40 +47,23 @@ public class IntCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenSave() {
-        Command commandStub = mock(StringCommand.class);
-
-        sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-    }
-
-    @Test
-    public void shouldReturnItselfWhenSaveWithIntCommand() {
+    public void shouldReturnItselfAndCallAccumulateWhenSaveWithIntCommand() {
         int messageStub = 1;
         Command commandStub = new IntCommand(messageStub, saverStub);
 
         Command result = sut.save(commandStub);
 
         assertThat(result).isEqualTo(sut);
-    }
-
-    @Test
-    public void shouldCallAccumulateWhenSaveWithIntCommand() {
-        int messageStub = 1;
-        Command commandStub = new IntCommand(messageStub, saverStub);
-
-        sut.save(commandStub);
-
         assertThat(sut.getMessage()).isEqualTo(2);
     }
 
     @Test
-    public void shouldReturnInputCommandWhenSave() {
+    public void shouldReturnInputCommandAndCallSaverSaveWhenSaveWithAnotherCommand() {
         Command commandStub = mock(StringCommand.class);
 
         Command result = sut.save(commandStub);
 
+        verify(saverStub).save(sut.getDecoratedString());
         assertThat(result).isEqualTo(commandStub);
     }
 
@@ -92,7 +75,7 @@ public class IntCommandTest {
     }
 
     @Test
-    public void shouldIncrementMessageWhenAccumulate() {
+    public void shouldIncrementMessageWhenAccumulateWithoutIntOverflow() {
         int messageStub = 1;
         Command commandStub = new IntCommand(messageStub, saverStub);
 
@@ -102,7 +85,7 @@ public class IntCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulate() {
+    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithIntOverflow() {
         int messageStub1 = 5;
         Command commandStub1 = new IntCommand(messageStub1, saverStub);
         int messageStub2 = Integer.MAX_VALUE;
