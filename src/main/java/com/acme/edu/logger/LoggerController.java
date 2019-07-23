@@ -1,14 +1,17 @@
 package com.acme.edu.logger;
 
 import com.acme.edu.command.Command;
-import com.acme.edu.saver.LogConsoleSaver;
+import com.acme.edu.customExceptions.NullSaverException;
 import com.acme.edu.saver.LogSaver;
 
 public class LoggerController {
     private Command currentMessage = null;
     private LogSaver saver;
 
-    public LoggerController(LogSaver saver) {
+    public LoggerController(LogSaver saver) throws NullSaverException{
+        if (saver == null) {
+            throw new NullSaverException("saver can`t be null");
+        }
         this.saver = saver;
     }
 

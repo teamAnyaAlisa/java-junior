@@ -2,7 +2,7 @@ package com.acme.edu.logger;
 
 import com.acme.edu.command.Command;
 import com.acme.edu.command.StringCommand;
-import com.acme.edu.logger.LoggerController;
+import com.acme.edu.customExceptions.NullSaverException;
 import com.acme.edu.saver.LogSaver;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +17,15 @@ public class LoggerControllerTest {
 
     @Before
     public void setUp() {
-        sut = new LoggerController(saverStub);
+        try {
+            sut = new LoggerController(saverStub);
+        } catch (NullSaverException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void shouldCallSaverSaveWhenLogWithString() {
+    public void shouldCallSaverSaveWhenLogWithString(){
         String message = "test string";
 
         sut.log(message);
@@ -68,5 +72,10 @@ public class LoggerControllerTest {
         sut.flush();
 
         assertThat(sut.getCurrentMessage()).isEqualTo(null);
+    }
+
+    @Test(expected = NullSaverException.class)
+    public void shouldThrowNullSaverExceptionWhenCreateLoggerControllerWithNullSaver() throws NullSaverException {
+        new LoggerController(null);
     }
 }

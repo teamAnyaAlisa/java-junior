@@ -4,7 +4,7 @@ import com.acme.edu.saver.LogSaver;
 
 public class LogConsoleSaver implements LogSaver {
     @Override
-    public void save(String message) {
+    public void save(String message){
         System.out.println(message);
     }
 }

@@ -1,12 +1,21 @@
 package com.acme.edu.logger;
 
 import com.acme.edu.command.*;
+import com.acme.edu.customExceptions.NullSaverException;
 import com.acme.edu.saver.LogConsoleSaver;
 import com.acme.edu.saver.LogSaver;
 
 public class Logger {
     private static LogSaver logConsoleSaver = new LogConsoleSaver();
-    private static LoggerController loggerController = new LoggerController(logConsoleSaver);
+    private static LoggerController loggerController;
+
+    static {
+        try {
+            loggerController = new LoggerController(logConsoleSaver);
+        } catch (NullSaverException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void log(int message) {
         loggerController.log(new IntCommand(message, logConsoleSaver));

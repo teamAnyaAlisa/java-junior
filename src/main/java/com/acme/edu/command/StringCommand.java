@@ -28,7 +28,7 @@ public class StringCommand implements Command {
     @Override
     public boolean equals(Command message) {
         return message instanceof StringCommand &&
-                this.message.equals(((StringCommand) message).message);
+            this.message.equals(((StringCommand) message).message);
     }
 
     @Override
