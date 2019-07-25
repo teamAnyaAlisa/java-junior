@@ -8,7 +8,7 @@ import com.acme.edu.saver.LogSaver;
 // TODO: выпилить save из Command, сообщать сюда о том, что пора сохранить, например, при помощи возвращаемого значения (boolean или Command)
 public class LoggerController {
     private Command currentMessage = null;
-    private LogSaver saver;
+    private LogSaver  saver;
 
     public LoggerController(LogSaver saver) throws NullSaverException{
         if (saver == null) {
