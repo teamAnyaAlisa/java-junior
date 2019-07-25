@@ -1,13 +1,15 @@
 package com.acme.edu.command;
 
+import com.acme.edu.customExceptions.LogSaverException;
+
 public interface Command {
     String getDecoratedString();
 
     boolean equals(Command message);
 
-    public Command save(Command message);
+    public Command save(Command message) throws LogSaverException;
 
-    void accumulate(Command message);
+    void accumulate(Command message) throws LogSaverException;
 
-    void flush();
+    void flush() throws LogSaverException;
 }

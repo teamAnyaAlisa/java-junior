@@ -3,6 +3,7 @@ package com.acme.edu.command;
 import com.acme.edu.command.ByteCommand;
 import com.acme.edu.command.Command;
 import com.acme.edu.command.StringCommand;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.saver.LogSaver;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class ByteCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() {
+    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() throws LogSaverException {
         Command commandStub = mock(StringCommand.class);
 
         Command result = sut.save(commandStub);
@@ -57,7 +58,7 @@ public class ByteCommandTest {
     }
 
     @Test
-    public void shouldReturnItselfAndCallAccumulateWhenSaveWithByteCommand() {
+    public void shouldReturnItselfAndCallAccumulateWhenSaveWithByteCommand() throws LogSaverException {
         byte messageStub = 1;
         Command commandStub = new ByteCommand(messageStub, saverStub);
 
@@ -68,14 +69,14 @@ public class ByteCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenFlush() {
+    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
         sut.flush();
 
         verify(saverStub).save(sut.getDecoratedString());
     }
 
     @Test
-    public void shouldIncrementMessageWhenAccumulateWithoutByteOverflow() {
+    public void shouldIncrementMessageWhenAccumulateWithoutByteOverflow() throws LogSaverException {
         byte messageStub = 1;
         Command commandStub = new ByteCommand(messageStub, saverStub);
 
@@ -85,7 +86,7 @@ public class ByteCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithByteOverflow() {
+    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithByteOverflow() throws LogSaverException {
         byte messageStub1 = 5;
         Command commandStub1 = new ByteCommand(messageStub1, saverStub);
         byte messageStub2 = Byte.MAX_VALUE;

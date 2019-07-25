@@ -1,5 +1,6 @@
 package com.acme.edu.command;
 
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.saver.LogSaver;
 
 public class IntCommand implements Command {
@@ -26,7 +27,7 @@ public class IntCommand implements Command {
     }
 
     @Override
-    public Command save(Command message) {
+    public Command save(Command message) throws LogSaverException {
         if (!equals(message)) {
             flush();
             return message;
@@ -37,7 +38,7 @@ public class IntCommand implements Command {
     }
 
     @Override
-    public void accumulate(Command message) {
+    public void accumulate(Command message) throws LogSaverException {
         int leftToTypeOverflow = Integer.MAX_VALUE - this.message;
         int messageValue = ((IntCommand) message).message;
         if (leftToTypeOverflow < messageValue) {
@@ -50,7 +51,7 @@ public class IntCommand implements Command {
     }
 
     @Override
-    public void flush() {
+    public void flush() throws LogSaverException {
         saver.save(getDecoratedString());
     }
 }

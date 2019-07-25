@@ -3,6 +3,7 @@ package com.acme.edu.command;
 import com.acme.edu.command.Command;
 import com.acme.edu.command.IntCommand;
 import com.acme.edu.command.StringCommand;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.saver.LogSaver;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +71,7 @@ public class StringCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() {
+    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() throws LogSaverException {
         Command commandStub = mock(IntCommand.class);
 
         Command result = sut.save(commandStub);
@@ -80,7 +81,7 @@ public class StringCommandTest {
     }
 
     @Test
-    public void shouldReturnItselfAndCallAccumulateWhenSaveWithStringCommandWithSameMessage() {
+    public void shouldReturnItselfAndCallAccumulateWhenSaveWithStringCommandWithSameMessage() throws LogSaverException {
         String messageStub = "test string";
         Command commandStub = new StringCommand(messageStub, saverStub);
 
@@ -91,7 +92,7 @@ public class StringCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenFlush() {
+    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
         sut.flush();
 
         verify(saverStub).save(sut.getDecoratedString());

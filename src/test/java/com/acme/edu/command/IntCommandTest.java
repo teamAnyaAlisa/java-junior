@@ -3,6 +3,7 @@ package com.acme.edu.command;
 import com.acme.edu.command.Command;
 import com.acme.edu.command.IntCommand;
 import com.acme.edu.command.StringCommand;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.saver.LogSaver;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class IntCommandTest {
     }
 
     @Test
-    public void shouldReturnItselfAndCallAccumulateWhenSaveWithIntCommand() {
+    public void shouldReturnItselfAndCallAccumulateWhenSaveWithIntCommand() throws LogSaverException {
         int messageStub = 1;
         Command commandStub = new IntCommand(messageStub, saverStub);
 
@@ -58,7 +59,7 @@ public class IntCommandTest {
     }
 
     @Test
-    public void shouldReturnInputCommandAndCallSaverSaveWhenSaveWithAnotherCommand() {
+    public void shouldReturnInputCommandAndCallSaverSaveWhenSaveWithAnotherCommand() throws LogSaverException {
         Command commandStub = mock(StringCommand.class);
 
         Command result = sut.save(commandStub);
@@ -68,14 +69,14 @@ public class IntCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenFlush() {
+    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
         sut.flush();
 
         verify(saverStub).save(sut.getDecoratedString());
     }
 
     @Test
-    public void shouldIncrementMessageWhenAccumulateWithoutIntOverflow() {
+    public void shouldIncrementMessageWhenAccumulateWithoutIntOverflow() throws LogSaverException {
         int messageStub = 1;
         Command commandStub = new IntCommand(messageStub, saverStub);
 
@@ -85,7 +86,7 @@ public class IntCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithIntOverflow() {
+    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithIntOverflow() throws LogSaverException {
         int messageStub1 = 5;
         Command commandStub1 = new IntCommand(messageStub1, saverStub);
         int messageStub2 = Integer.MAX_VALUE;

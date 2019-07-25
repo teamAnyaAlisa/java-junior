@@ -1,6 +1,7 @@
 package com.acme.edu.command;
 
 import com.acme.edu.command.Command;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.saver.LogSaver;
 
 public class CharCommand implements Command {
@@ -27,7 +28,7 @@ public class CharCommand implements Command {
     }
 
     @Override
-    public Command save(Command message) {
+    public Command save(Command message) throws LogSaverException {
         flush();
         return message;
     }
@@ -37,7 +38,7 @@ public class CharCommand implements Command {
     }
 
     @Override
-    public void flush() {
+    public void flush() throws LogSaverException {
         saver.save(getDecoratedString());
     }
 }

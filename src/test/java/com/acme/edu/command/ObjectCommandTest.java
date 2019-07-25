@@ -4,6 +4,7 @@ import com.acme.edu.command.BooleanCommand;
 import com.acme.edu.command.Command;
 import com.acme.edu.command.ObjectCommand;
 import com.acme.edu.command.StringCommand;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.saver.LogConsoleSaver;
 import com.acme.edu.saver.LogSaver;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class ObjectCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndReturnInputCommandWhenSave() {
+    public void shouldCallSaverSaveAndReturnInputCommandWhenSave() throws LogSaverException {
         Command commandStub = mock(StringCommand.class);
 
         Command result = sut.save(commandStub);
@@ -59,7 +60,7 @@ public class ObjectCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenFlush() {
+    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
         sut.flush();
 
         verify(saverStub).save(sut.getDecoratedString());

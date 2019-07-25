@@ -2,6 +2,7 @@ package com.acme.edu.logger;
 
 import com.acme.edu.command.Command;
 import com.acme.edu.command.StringCommand;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.customExceptions.NullSaverException;
 import com.acme.edu.saver.LogSaver;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public class LoggerControllerTest {
     }
 
     @Test
-    public void shouldCallSaverSaveWhenLogWithString(){
+    public void shouldCallSaverSaveWhenLogWithString() throws LogSaverException {
         String message = "test string";
 
         sut.log(message);
@@ -34,7 +35,7 @@ public class LoggerControllerTest {
     }
 
     @Test
-    public void shouldSetCurrentMessageToInputCommandWhenLogWithCommandForFirstTime() {
+    public void shouldSetCurrentMessageToInputCommandWhenLogWithCommandForFirstTime() throws LogSaverException {
         Command commandStub = new StringCommand("test string 1", saverStub);
 
         sut.log(commandStub);
@@ -43,7 +44,7 @@ public class LoggerControllerTest {
     }
 
     @Test
-    public void shouldSetCurrentMessageToInputCommandAndSavePreviousWhenLogWithCommand() {
+    public void shouldSetCurrentMessageToInputCommandAndSavePreviousWhenLogWithCommand() throws LogSaverException {
         Command commandStub1 = new StringCommand("test string 1", saverStub);
         Command commandStub2 = mock(StringCommand.class);
 
@@ -57,7 +58,7 @@ public class LoggerControllerTest {
     }
 
     @Test
-    public void shouldCallCurrentMessageFlushAndFlushStateWhenFlush() {
+    public void shouldCallCurrentMessageFlushAndFlushStateWhenFlush() throws LogSaverException {
         Command commandStub = mock(StringCommand.class);
 
         sut.log(commandStub);
@@ -68,7 +69,7 @@ public class LoggerControllerTest {
     }
 
     @Test
-    public void shouldHasNoSideEffectsWhenFlushWithEmptyCurrentState() {
+    public void shouldHasNoSideEffectsWhenFlushWithEmptyCurrentState() throws LogSaverException {
         sut.flush();
 
         assertThat(sut.getCurrentMessage()).isEqualTo(null);

@@ -1,6 +1,7 @@
 package com.acme.edu.command;
 
 import com.acme.edu.command.Command;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.saver.LogSaver;
 import sun.rmi.runtime.Log;
 
@@ -28,7 +29,7 @@ public class ObjectCommand implements Command {
     }
 
     @Override
-    public Command save(Command message) {
+    public Command save(Command message) throws LogSaverException {
         flush();
         return message;
     }
@@ -38,7 +39,7 @@ public class ObjectCommand implements Command {
     }
 
     @Override
-    public void flush() {
+    public void flush() throws LogSaverException {
         saver.save(getDecoratedString());
     }
 }

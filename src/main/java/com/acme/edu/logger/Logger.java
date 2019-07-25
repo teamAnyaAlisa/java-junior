@@ -1,6 +1,7 @@
 package com.acme.edu.logger;
 
 import com.acme.edu.command.*;
+import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.customExceptions.NullSaverException;
 import com.acme.edu.saver.LogConsoleSaver;
 import com.acme.edu.saver.LogSaver;
@@ -17,11 +18,11 @@ public class Logger {
         }
     }
 
-    public static void log(int message) {
+    public static void log(int message) throws LogSaverException {
         loggerController.log(new IntCommand(message, logConsoleSaver));
     }
 
-    public static void log(byte message) {
+    public static void log(byte message) throws LogSaverException {
         loggerController.log(new ByteCommand(message, logConsoleSaver));
     }
 
@@ -34,27 +35,27 @@ public class Logger {
         return result.toString();
     }
 
-    public static void log(int[] message) {
+    public static void log(int[] message) throws LogSaverException {
         loggerController.log("primitives array: " + arrayMessageToString(message));
     }
 
-    public static void log(char message) {
+    public static void log(char message) throws LogSaverException {
         loggerController.log(new CharCommand(message, logConsoleSaver));
     }
 
-    public static void log(String message) {
+    public static void log(String message) throws LogSaverException {
         loggerController.log(new StringCommand(message, logConsoleSaver));
     }
 
-    public static void log(boolean message) {
+    public static void log(boolean message) throws LogSaverException {
         loggerController.log(new BooleanCommand(message, logConsoleSaver));
     }
 
-    public static void log(Object message) {
+    public static void log(Object message) throws LogSaverException {
         loggerController.log(new ObjectCommand(message, logConsoleSaver));
     }
 
-    public static void flush() {
+    public static void flush() throws LogSaverException {
         loggerController.flush();
     }
 }
