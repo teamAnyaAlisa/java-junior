@@ -11,11 +11,11 @@ public class LogFileSaver implements LogSaver {
     // TODO: final
     private BufferedWriter outLogStream;
 
-    LogFileSaver(String filePath) throws LogFileSaverException {
+    public LogFileSaver(String filePath) throws LogFileSaverException {
         this(filePath, "windows-1251");
     }
 
-    LogFileSaver(String filePath, String fileEncoding) throws LogFileSaverException {
+    public LogFileSaver(String filePath, String fileEncoding) throws LogFileSaverException {
         if ((fileEncoding != null) && !fileEncoding.equals("")) {
             this.fileEncoding = fileEncoding;
         }

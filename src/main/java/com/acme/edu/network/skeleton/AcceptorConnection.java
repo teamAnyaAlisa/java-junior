@@ -1,6 +1,6 @@
 // отвечает за установку (accept) сетевого соединения, инкапсулирует все до бизнес-логики
 
-package com.acme.edu.skeleton;
+package com.acme.edu.network.skeleton;
 
 import com.acme.edu.customExceptions.server.*;
 
@@ -12,8 +12,10 @@ public class AcceptorConnection {
     private int port;
     private ServerSocket serverSocket;
     private Socket client;
+    private BufferedReader clientInputStream;
+    private BufferedWriter clientOutputStream;
 
-    AcceptorConnection(int port) throws LoggerServerException {
+    public AcceptorConnection(int port) throws LoggerServerException {
         this.port = port;
         try {
             serverSocket = new ServerSocket(this.port);
@@ -26,18 +28,22 @@ public class AcceptorConnection {
     public void establishConnection() throws LoggerServerException {
         try {
             Socket client = serverSocket.accept();
+            clientInputStream = new BufferedReader(
+                                    new InputStreamReader(
+                                        new BufferedInputStream(
+                                            client.getInputStream())));
+            clientOutputStream = new BufferedWriter(
+                                     new OutputStreamWriter(
+                                         new BufferedOutputStream(
+                                             client.getOutputStream())));
         } catch (IOException e) {
             e.printStackTrace();
             throw new FailEstablishConnectionException("something went wrong with establishing server listener", e);
         }
     }
 
-    public String getClientLogCommend() throws LoggerServerException {
-        try (BufferedReader clientInputStream =
-                     new BufferedReader(
-                             new InputStreamReader(
-                                     new BufferedInputStream(
-                                             client.getInputStream())))) {
+    public String getClientLogMessage() throws LoggerServerException {
+        try {
             return clientInputStream.readLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,11 +52,7 @@ public class AcceptorConnection {
     }
 
     public void passCommandExecutionStatus(String commandExecutionStatus) throws LoggerServerException {
-        try (BufferedWriter clientOutputStream =
-                     new BufferedWriter(
-                             new OutputStreamWriter(
-                                     new BufferedOutputStream(
-                                             client.getOutputStream())))) {
+        try {
             clientOutputStream.write(commandExecutionStatus);
             clientOutputStream.newLine();
             clientOutputStream.flush();
@@ -60,9 +62,11 @@ public class AcceptorConnection {
         }
     }
 
-    // нормально обработать ошибки при закрытии
+    // TODO нормально обработать ошибки при закрытии
     public void close() throws LoggerServerException {
         try {
+            clientOutputStream.close();
+            clientInputStream.close();
             client.close();
             serverSocket.close();
         } catch (IOException e) {
