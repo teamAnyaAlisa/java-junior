@@ -14,12 +14,11 @@ import static org.mockito.Mockito.verify;
 
 public class CharCommandTest {
     private CharCommand sut;
-    private LogSaver saverStub = mock(LogSaver.class);
 
     @Before
     public void setUp() {
         char messageStub = 'a';
-        sut = new CharCommand(messageStub, saverStub);
+        sut = new CharCommand(messageStub);
     }
 
     @Test
@@ -45,23 +44,6 @@ public class CharCommandTest {
         boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
-    }
-
-    @Test
-    public void shouldCallSaverSaveAndReturnInputCommandWhenSave() throws LogSaverException {
-        Command commandStub = mock(StringCommand.class);
-
-        Command result = sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-        assertThat(result).isEqualTo(commandStub);
-    }
-
-    @Test
-    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
-        sut.flush();
-
-        verify(saverStub).save(sut.getDecoratedString());
     }
 
     @Test

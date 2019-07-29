@@ -5,11 +5,9 @@ import com.acme.edu.saver.LogSaver;
 
 public class ByteCommand implements Command {
     private int message = 0;
-    private LogSaver saver;
 
-    public ByteCommand(byte message, LogSaver saver) {
+    public ByteCommand(byte message) {
         this.message = message;
-        this.saver = saver;
     }
 
     int getMessage() {
@@ -27,31 +25,15 @@ public class ByteCommand implements Command {
     }
 
     @Override
-    public Command save(Command message) throws LogSaverException {
-        if (!equals(message)) {
-            flush();
-            return message;
-        }
-
-        accumulate(message);
-        return this;
-    }
-
-    @Override
-    public void accumulate(Command message) throws LogSaverException {
+    public Command accumulate(Command message) throws LogSaverException {
         int leftToTypeOverflow = Byte.MAX_VALUE - this.message;
         int messageValue = ((ByteCommand) message).message;
         if (leftToTypeOverflow < messageValue) {
             this.message = messageValue - leftToTypeOverflow;
-            saver.save((new ByteCommand(Byte.MAX_VALUE, this.saver)).getDecoratedString());
-            return;
+            return new ByteCommand(Byte.MAX_VALUE);
         }
 
         this.message += messageValue;
-    }
-
-    @Override
-    public void flush() throws LogSaverException {
-        saver.save(getDecoratedString());
+        return null;
     }
 }

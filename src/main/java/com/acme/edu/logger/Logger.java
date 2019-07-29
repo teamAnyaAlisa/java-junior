@@ -19,11 +19,11 @@ public class Logger {
     }
 
     public static void log(int message) throws LogSaverException {
-        loggerController.log(new IntCommand(message, logConsoleSaver));
+        loggerController.log(new IntCommand(message));
     }
 
     public static void log(byte message) throws LogSaverException {
-        loggerController.log(new ByteCommand(message, logConsoleSaver));
+        loggerController.log(new ByteCommand(message));
     }
 
     private static String arrayMessageToString(int[] message) {
@@ -40,19 +40,19 @@ public class Logger {
     }
 
     public static void log(char message) throws LogSaverException {
-        loggerController.log(new CharCommand(message, logConsoleSaver));
+        loggerController.log(new CharCommand(message));
     }
 
     public static void log(String message) throws LogSaverException {
-        loggerController.log(new StringCommand(message, logConsoleSaver));
+        loggerController.log(new StringCommand(message));
     }
 
     public static void log(boolean message) throws LogSaverException {
-        loggerController.log(new BooleanCommand(message, logConsoleSaver));
+        loggerController.log(new BooleanCommand(message));
     }
 
     public static void log(Object message) throws LogSaverException {
-        loggerController.log(new ObjectCommand(message, logConsoleSaver));
+        loggerController.log(new ObjectCommand(message));
     }
 
     public static void flush() throws LogSaverException {

@@ -6,11 +6,9 @@ import com.acme.edu.saver.LogSaver;
 public class StringCommand implements Command {
     private String message;
     private int repetitionMessageCounter = 1;
-    private LogSaver saver;
 
-    public StringCommand(String message, LogSaver saver) {
+    public StringCommand(String message) {
         this.message = message;
-        this.saver = saver;
     }
 
     int getRepetitionMessageCounter() {
@@ -33,23 +31,8 @@ public class StringCommand implements Command {
     }
 
     @Override
-    public Command save(Command message) throws LogSaverException {
-        if (!equals(message)) {
-            flush();
-            return message;
-        }
-
-        accumulate(message);
-        return this;
-    }
-
-    @Override
-    public void accumulate(Command message) {
+    public Command accumulate(Command message) {
         repetitionMessageCounter += 1;
-    }
-
-    @Override
-    public void flush() throws LogSaverException {
-        saver.save(getDecoratedString());
+        return null;
     }
 }

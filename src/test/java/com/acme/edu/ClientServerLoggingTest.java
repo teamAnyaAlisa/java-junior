@@ -8,10 +8,12 @@ import com.acme.edu.network.client.ClientProxy;
 import com.acme.edu.network.skeleton.AcceptorConnection;
 import com.acme.edu.network.skeleton.LogRequestHandler;
 import com.acme.edu.network.skeleton.LoggerServer;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.Socket;
 
+@Ignore
 public class ClientServerLoggingTest {
     @Test
     public void LogMessageFromClientThroughClientProxy() throws LogSaverException, LoggerServerException, ClientProxyException {

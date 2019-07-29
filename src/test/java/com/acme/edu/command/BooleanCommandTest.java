@@ -13,12 +13,11 @@ import static org.mockito.Mockito.*;
 
 public class BooleanCommandTest {
     private BooleanCommand sut;
-    private LogSaver saverStub = mock(LogSaver.class);
 
     @Before
     public void setUp() {
         boolean messageStub = true;
-        sut = new BooleanCommand(messageStub, saverStub);
+        sut = new BooleanCommand(messageStub);
     }
 
     @Test
@@ -44,23 +43,6 @@ public class BooleanCommandTest {
         boolean result = sut.equals(commandStub);
 
         assertThat(result).isEqualTo(false);
-    }
-
-    @Test
-    public void shouldCallSaverSaveAndReturnInputCommandWhenSave() throws LogSaverException {
-        Command commandStub = mock(StringCommand.class);
-
-        Command result = sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-        assertThat(result).isEqualTo(commandStub);
-    }
-
-    @Test
-    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
-        sut.flush();
-
-        verify(saverStub).save(sut.getDecoratedString());
     }
 
     @Test

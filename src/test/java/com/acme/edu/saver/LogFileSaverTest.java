@@ -29,4 +29,4 @@ public class LogFileSaverTest {
     }
 }
 
-// TODO: check other saver functions
+// TODO: exceptions for other saver functions

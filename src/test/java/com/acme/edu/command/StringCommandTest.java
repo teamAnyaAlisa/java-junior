@@ -14,12 +14,11 @@ import static org.mockito.Mockito.verify;
 
 public class StringCommandTest {
     private StringCommand sut;
-    private LogSaver saverStub = mock(LogSaver.class);
 
     @Before
     public void setUp() {
         String messageStub = "test string";
-        sut = new StringCommand(messageStub, saverStub);
+        sut = new StringCommand(messageStub);
     }
 
     @Test
@@ -32,7 +31,7 @@ public class StringCommandTest {
     @Test
     public void shouldAddPrimitivePrefixAndCounterPostfixWhenGetDecoratedString() {
         String messageStub = "test string";
-        Command commandStub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub);
 
         sut.accumulate(commandStub);
         String result = sut.getDecoratedString();
@@ -44,7 +43,7 @@ public class StringCommandTest {
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithStringCommandWithSameMessage() {
         String messageStub = "test string";
-        Command commandStub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub);
 
         boolean result = sut.equals(commandStub);
 
@@ -54,7 +53,7 @@ public class StringCommandTest {
     @Test
     public void shouldReturnTrueWhenEqualsCalledWithStringCommandWithAnotherMessage() {
         String messageStub = "test another string";
-        Command commandStub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub);
 
         boolean result = sut.equals(commandStub);
 
@@ -71,37 +70,9 @@ public class StringCommandTest {
     }
 
     @Test
-    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() throws LogSaverException {
-        Command commandStub = mock(IntCommand.class);
-
-        Command result = sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-        assertThat(result).isEqualTo(commandStub);
-    }
-
-    @Test
-    public void shouldReturnItselfAndCallAccumulateWhenSaveWithStringCommandWithSameMessage() throws LogSaverException {
-        String messageStub = "test string";
-        Command commandStub = new StringCommand(messageStub, saverStub);
-
-        Command result = sut.save(commandStub);
-
-        assertThat(result).isEqualTo(sut);
-        assertThat(sut.getRepetitionMessageCounter()).isEqualTo(2);
-    }
-
-    @Test
-    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
-        sut.flush();
-
-        verify(saverStub).save(sut.getDecoratedString());
-    }
-
-    @Test
     public void shouldIncrementRepetitionCounterWhenAccumulate() {
         String messageStub = "test string";
-        Command commandStub = new StringCommand(messageStub, saverStub);
+        Command commandStub = new StringCommand(messageStub);
 
         sut.accumulate(commandStub);
 

@@ -14,12 +14,11 @@ import static org.mockito.Mockito.verify;
 
 public class IntCommandTest {
     private IntCommand sut;
-    private LogSaver saverStub = mock(LogSaver.class);
 
     @Before
     public void setUp() {
         int messageStub = 1;
-        sut = new IntCommand(messageStub, saverStub);
+        sut = new IntCommand(messageStub);
     }
 
     @Test
@@ -47,55 +46,27 @@ public class IntCommandTest {
         assertThat(result).isEqualTo(false);
     }
 
-    @Test
-    public void shouldReturnItselfAndCallAccumulateWhenSaveWithIntCommand() throws LogSaverException {
-        int messageStub = 1;
-        Command commandStub = new IntCommand(messageStub, saverStub);
-
-        Command result = sut.save(commandStub);
-
-        assertThat(result).isEqualTo(sut);
-        assertThat(sut.getMessage()).isEqualTo(2);
-    }
-
-    @Test
-    public void shouldReturnInputCommandAndCallSaverSaveWhenSaveWithAnotherCommand() throws LogSaverException {
-        Command commandStub = mock(StringCommand.class);
-
-        Command result = sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-        assertThat(result).isEqualTo(commandStub);
-    }
-
-    @Test
-    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
-        sut.flush();
-
-        verify(saverStub).save(sut.getDecoratedString());
-    }
-
-    @Test
-    public void shouldIncrementMessageWhenAccumulateWithoutIntOverflow() throws LogSaverException {
-        int messageStub = 1;
-        Command commandStub = new IntCommand(messageStub, saverStub);
-
-        sut.accumulate(commandStub);
-
-        assertThat(sut.getMessage()).isEqualTo(2);
-    }
-
-    @Test
-    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithIntOverflow() throws LogSaverException {
-        int messageStub1 = 5;
-        Command commandStub1 = new IntCommand(messageStub1, saverStub);
-        int messageStub2 = Integer.MAX_VALUE;
-        Command commandStub2 = new IntCommand(messageStub2, saverStub);
-
-        sut.accumulate(commandStub1);
-        sut.accumulate(commandStub2);
-
-        verify(saverStub).save(commandStub2.getDecoratedString());
-        assertThat(sut.getMessage()).isEqualTo(6);
-    }
+//    @Test
+//    public void shouldIncrementMessageWhenAccumulateWithoutIntOverflow() throws LogSaverException {
+//        int messageStub = 1;
+//        Command commandStub = new IntCommand(messageStub, saverStub);
+//
+//        sut.accumulate(commandStub);
+//
+//        assertThat(sut.getMessage()).isEqualTo(2);
+//    }
+//
+//    @Test
+//    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithIntOverflow() throws LogSaverException {
+//        int messageStub1 = 5;
+//        Command commandStub1 = new IntCommand(messageStub1, saverStub);
+//        int messageStub2 = Integer.MAX_VALUE;
+//        Command commandStub2 = new IntCommand(messageStub2, saverStub);
+//
+//        sut.accumulate(commandStub1);
+//        sut.accumulate(commandStub2);
+//
+//        verify(saverStub).save(commandStub2.getDecoratedString());
+//        assertThat(sut.getMessage()).isEqualTo(6);
+//    }
 }

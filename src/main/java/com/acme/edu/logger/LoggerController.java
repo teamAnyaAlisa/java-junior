@@ -5,10 +5,11 @@ import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.customExceptions.NullSaverException;
 import com.acme.edu.saver.LogSaver;
 
-// TODO: выпилить save из Command, сообщать сюда о том, что пора сохранить, например, при помощи возвращаемого значения (boolean или Command)
+import java.util.Objects;
+
 public class LoggerController {
     private Command currentMessage = null;
-    private LogSaver  saver;
+    private LogSaver saver;
 
     public LoggerController(LogSaver saver) throws NullSaverException{
         if (saver == null) {
@@ -27,7 +28,16 @@ public class LoggerController {
             return;
         }
 
-        currentMessage = currentMessage.save(message);
+        if (!Objects.equals(currentMessage, message)) {
+            saver.save(currentMessage.getDecoratedString());
+            currentMessage = message;
+            return;
+        }
+
+        Command messageToFlush = currentMessage.accumulate(message);
+        if (messageToFlush != null) {
+            saver.save(messageToFlush.getDecoratedString());
+        }
     }
 
     public void log(String message) throws LogSaverException {
@@ -37,11 +47,11 @@ public class LoggerController {
     public void flush() throws LogSaverException {
         if (currentMessage == null) return;
 
-        currentMessage.flush();
+        saver.save(currentMessage.getDecoratedString());
         currentMessage = null;
     }
 
-    public void close() {
-
+    public void close() throws LogSaverException {
+        saver.close();
     }
 }

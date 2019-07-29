@@ -1,6 +1,7 @@
 package com.acme.edu.network.skeleton;
 
 import com.acme.edu.command.Command;
+import com.acme.edu.command.FlushCommand;
 import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.customExceptions.NullSaverException;
 import com.acme.edu.customExceptions.server.LoggerServerException;
@@ -37,7 +38,11 @@ public class LoggerServer {
                 // System.out.println(messageClientRepresentation);
                 Command messageInternalRepresentation = logRequestHandler.parseClientMessage(messageClientRepresentation);
                 try {
-                    loggerController.log(messageInternalRepresentation);
+                    if (messageInternalRepresentation instanceof FlushCommand) {
+                        loggerController.flush();
+                    } else {
+                        loggerController.log(messageInternalRepresentation);
+                    }
                 } catch (LogSaverException e) {
                     loggingExecutionStatus = e.getMessage();
                 }

@@ -36,7 +36,7 @@ public class LoggerControllerTest {
 
     @Test
     public void shouldSetCurrentMessageToInputCommandWhenLogWithCommandForFirstTime() throws LogSaverException {
-        Command commandStub = new StringCommand("test string 1", saverStub);
+        Command commandStub = new StringCommand("test string 1");
 
         sut.log(commandStub);
 
@@ -45,26 +45,24 @@ public class LoggerControllerTest {
 
     @Test
     public void shouldSetCurrentMessageToInputCommandAndSavePreviousWhenLogWithCommand() throws LogSaverException {
-        Command commandStub1 = new StringCommand("test string 1", saverStub);
+        Command commandStub1 = new StringCommand("test string 1");
         Command commandStub2 = mock(StringCommand.class);
 
-        when(commandStub2.save(commandStub1)).thenReturn(commandStub1);
-
-        sut.log(commandStub2);
         sut.log(commandStub1);
+        sut.log(commandStub2);
 
-        verify(commandStub2).save(commandStub1);
-        assertThat(sut.getCurrentMessage()).isEqualTo(commandStub1);
+        verify(saverStub).save(commandStub1.getDecoratedString());
+        assertThat(sut.getCurrentMessage()).isEqualTo(commandStub2);
     }
 
     @Test
-    public void shouldCallCurrentMessageFlushAndFlushStateWhenFlush() throws LogSaverException {
-        Command commandStub = mock(StringCommand.class);
+    public void shouldFlushStateAndCallSaverSaveWhenFlush() throws LogSaverException {
+        Command commandStub = new StringCommand("test string");
 
         sut.log(commandStub);
         sut.flush();
 
-        verify(commandStub).flush();
+        verify(saverStub).save(commandStub.getDecoratedString());
         assertThat(sut.getCurrentMessage()).isEqualTo(null);
     }
 

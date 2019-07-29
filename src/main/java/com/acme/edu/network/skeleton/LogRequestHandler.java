@@ -3,32 +3,24 @@
 package com.acme.edu.network.skeleton;
 
 import com.acme.edu.command.*;
-import com.acme.edu.customExceptions.LogSaverException;
-import com.acme.edu.saver.LogConsoleSaver;
-import com.acme.edu.saver.LogSaver;
 
 public class LogRequestHandler {
-    private LogSaver logSaver;
-
-    public LogRequestHandler() throws LogSaverException {
-        logSaver = new LogConsoleSaver();
-    }
-
     public Command parseClientMessage (String message) {
         String[] clientCommand = message.split(" ", 2);
-        System.out.println(clientCommand[0]+ " " + clientCommand[1]);
-        System.out.println(logSaver.toString());
         switch (clientCommand[0]) {
             case "int":
-                return new IntCommand(Integer.parseInt(clientCommand[1]), logSaver);
+                return new IntCommand(Integer.parseInt(clientCommand[1]));
             case "byte":
-                return new ByteCommand(Byte.parseByte(clientCommand[1]), logSaver);
+                return new ByteCommand(Byte.parseByte(clientCommand[1]));
             case "char":
-                return new CharCommand(clientCommand[1].charAt(0), logSaver);
-            case "String":
-                return new StringCommand(clientCommand[1], logSaver);
+                return new CharCommand(clientCommand[1].charAt(0));
+            case "string":
+                return new StringCommand(clientCommand[1]);
             case "boolean":
-                return new BooleanCommand(Boolean.parseBoolean(clientCommand[1]), logSaver);
+                return new BooleanCommand(Boolean.parseBoolean(clientCommand[1]));
+            case "flush":
+                return new FlushCommand();
+            // TODO: close(); ask about Object
             default:
                 return null;
         }

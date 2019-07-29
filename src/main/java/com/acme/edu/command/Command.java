@@ -7,9 +7,5 @@ public interface Command {
 
     boolean equals(Command message);
 
-    public Command save(Command message) throws LogSaverException;
-
-    void accumulate(Command message) throws LogSaverException;
-
-    void flush() throws LogSaverException;
+    Command accumulate(Command message) throws LogSaverException;
 }

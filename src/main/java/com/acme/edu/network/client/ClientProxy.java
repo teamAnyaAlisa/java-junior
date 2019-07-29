@@ -39,17 +39,6 @@ public class ClientProxy {
         }
     }
 
-    public <T> void log(T message) throws ClientProxyException {
-        try {
-            out.write(message.getClass().getName() + " " + message);
-            out.newLine();
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
-        }
-    }
-
     public String getLogMessageStatus() throws ClientProxyException {
         try {
             return in.readLine();
@@ -70,7 +59,51 @@ public class ClientProxy {
         }
     }
 
-    // TODO add non primitive types handlers
+    public void log(byte message) throws ClientProxyException {
+        try {
+            out.write("byte " + message);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+        }
+    }
+
+    public void log(char message) throws ClientProxyException {
+        try {
+            out.write("char " + message);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+        }
+    }
+
+    public void log(boolean message) throws ClientProxyException {
+        try {
+            out.write("boolean " + message);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+        }
+    }
+
+    public void log(String message) throws ClientProxyException {
+        try {
+            out.write("string " + message);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+        }
+    }
+
+    // TODO: Object, array
 
     public void flush() throws ClientProxyException {
         try {

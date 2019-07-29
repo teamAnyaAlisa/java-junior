@@ -7,11 +7,9 @@ import sun.rmi.runtime.Log;
 
 public class ObjectCommand implements Command {
     private Object message;
-    private LogSaver saver;
 
-    public ObjectCommand(Object message, LogSaver saver) {
+    public ObjectCommand(Object message) {
         this.message = message;
-        this.saver = saver;
     }
 
     Object getMessage() {
@@ -29,17 +27,7 @@ public class ObjectCommand implements Command {
     }
 
     @Override
-    public Command save(Command message) throws LogSaverException {
-        flush();
-        return message;
-    }
-
-    @Override
-    public void accumulate(Command message) {
-    }
-
-    @Override
-    public void flush() throws LogSaverException {
-        saver.save(getDecoratedString());
+    public Command accumulate(Command message) {
+        return null;
     }
 }

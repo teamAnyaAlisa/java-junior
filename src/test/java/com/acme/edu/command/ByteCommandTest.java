@@ -14,12 +14,11 @@ import static org.mockito.Mockito.verify;
 
 public class ByteCommandTest {
     private ByteCommand sut;
-    private LogSaver saverStub = mock(LogSaver.class);
 
     @Before
     public void setUp() {
         byte messageStub = 1;
-        sut = new ByteCommand(messageStub, saverStub);
+        sut = new ByteCommand(messageStub);
     }
 
     @Test
@@ -47,55 +46,27 @@ public class ByteCommandTest {
         assertThat(result).isEqualTo(false);
     }
 
-    @Test
-    public void shouldCallSaverSaveAndReturnInputCommandWhenSaveWithAnotherCommand() throws LogSaverException {
-        Command commandStub = mock(StringCommand.class);
-
-        Command result = sut.save(commandStub);
-
-        verify(saverStub).save(sut.getDecoratedString());
-        assertThat(result).isEqualTo(commandStub);
-    }
-
-    @Test
-    public void shouldReturnItselfAndCallAccumulateWhenSaveWithByteCommand() throws LogSaverException {
-        byte messageStub = 1;
-        Command commandStub = new ByteCommand(messageStub, saverStub);
-
-        Command result = sut.save(commandStub);
-
-        assertThat(result).isEqualTo(sut);
-        assertThat(sut.getMessage()).isEqualTo(2);
-    }
-
-    @Test
-    public void shouldCallSaverSaveWhenFlush() throws LogSaverException {
-        sut.flush();
-
-        verify(saverStub).save(sut.getDecoratedString());
-    }
-
-    @Test
-    public void shouldIncrementMessageWhenAccumulateWithoutByteOverflow() throws LogSaverException {
-        byte messageStub = 1;
-        Command commandStub = new ByteCommand(messageStub, saverStub);
-
-        sut.accumulate(commandStub);
-
-        assertThat(sut.getMessage()).isEqualTo(2);
-    }
-
-    @Test
-    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithByteOverflow() throws LogSaverException {
-        byte messageStub1 = 5;
-        Command commandStub1 = new ByteCommand(messageStub1, saverStub);
-        byte messageStub2 = Byte.MAX_VALUE;
-        Command commandStub2 = new ByteCommand(messageStub2, saverStub);
-
-        sut.accumulate(commandStub1);
-        sut.accumulate(commandStub2);
-
-        verify(saverStub).save(commandStub2.getDecoratedString());
-        assertThat(sut.getMessage()).isEqualTo(6);
-    }
+//    @Test
+//    public void shouldIncrementMessageWhenAccumulateWithoutByteOverflow() throws LogSaverException {
+//        byte messageStub = 1;
+//        Command commandStub = new ByteCommand(messageStub, saverStub);
+//
+//        sut.accumulate(commandStub);
+//
+//        assertThat(sut.getMessage()).isEqualTo(2);
+//    }
+//
+//    @Test
+//    public void shouldCallSaverSaveAndIncrementMessageWhenAccumulateWithByteOverflow() throws LogSaverException {
+//        byte messageStub1 = 5;
+//        Command commandStub1 = new ByteCommand(messageStub1, saverStub);
+//        byte messageStub2 = Byte.MAX_VALUE;
+//        Command commandStub2 = new ByteCommand(messageStub2, saverStub);
+//
+//        sut.accumulate(commandStub1);
+//        sut.accumulate(commandStub2);
+//
+//        verify(saverStub).save(commandStub2.getDecoratedString());
+//        assertThat(sut.getMessage()).isEqualTo(6);
+//    }
 }

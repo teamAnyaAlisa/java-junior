@@ -6,11 +6,9 @@ import com.acme.edu.saver.LogSaver;
 
 public class CharCommand implements Command {
     private char message = 0;
-    private LogSaver saver;
 
-    public CharCommand(char message, LogSaver saver) {
+    public CharCommand(char message) {
         this.message = message;
-        this.saver = saver;
     }
 
     char getMessage() {
@@ -27,18 +25,7 @@ public class CharCommand implements Command {
         return message instanceof CharCommand;
     }
 
-    @Override
-    public Command save(Command message) throws LogSaverException {
-        flush();
-        return message;
-    }
-
-    @Override
-    public void accumulate(Command message) {
-    }
-
-    @Override
-    public void flush() throws LogSaverException {
-        saver.save(getDecoratedString());
+    public Command accumulate(Command message) {
+        return null;
     }
 }
