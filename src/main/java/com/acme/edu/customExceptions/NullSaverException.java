@@ -1,6 +1,6 @@
 package com.acme.edu.customExceptions;
 
-public class NullSaverException extends Exception {
+public class NullSaverException extends LogSaverException {
     public NullSaverException() {
         super();
     }

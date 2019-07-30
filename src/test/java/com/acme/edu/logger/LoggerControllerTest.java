@@ -20,7 +20,7 @@ public class LoggerControllerTest {
     public void setUp() {
         try {
             sut = new LoggerController(saverStub);
-        } catch (NullSaverException e) {
+        } catch (LogSaverException e) {
             e.printStackTrace();
         }
     }
@@ -74,7 +74,7 @@ public class LoggerControllerTest {
     }
 
     @Test(expected = NullSaverException.class)
-    public void shouldThrowNullSaverExceptionWhenCreateLoggerControllerWithNullSaver() throws NullSaverException {
+    public void shouldThrowNullSaverExceptionWhenCreateLoggerControllerWithNullSaver() throws LogSaverException {
         new LoggerController(null);
     }
 }

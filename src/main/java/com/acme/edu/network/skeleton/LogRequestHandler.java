@@ -20,7 +20,6 @@ public class LogRequestHandler {
                 return new BooleanCommand(Boolean.parseBoolean(clientCommand[1]));
             case "flush":
                 return new FlushCommand();
-            // TODO: close(); ask about Object
             default:
                 return null;
         }

@@ -4,7 +4,7 @@ package com.acme.edu.network.client;
 
 import com.acme.edu.customExceptions.client.ClientProxyException;
 import com.acme.edu.customExceptions.client.FailCloseClientProxyConnectionException;
-import com.acme.edu.customExceptions.client.FailCreateClientProxyException;
+import com.acme.edu.customExceptions.client.FailEstablishClientConnectionException;
 import com.acme.edu.customExceptions.client.FailPassMessageToServerException;
 
 import java.io.*;
@@ -19,23 +19,17 @@ public class ClientProxy {
         try {
             server = new Socket("localhost", port);
 
-            try {
-                out = new BufferedWriter(
-                          new OutputStreamWriter(
-                              new BufferedOutputStream(
-                                  server.getOutputStream())));
-
-                in = new BufferedReader(
+            out = new BufferedWriter(
+                    new OutputStreamWriter(
+                            new BufferedOutputStream(
+                                    server.getOutputStream())));
+            in = new BufferedReader(
                         new InputStreamReader(
                                 new BufferedInputStream(
                                         server.getInputStream())));
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new FailCreateClientProxyException("something went wrong with creating client writer", e);
-            }
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailCreateClientProxyException("can`t create connection with server", e);
+            throw new FailEstablishClientConnectionException("can`t establish client connection to server", e);
         }
     }
 
@@ -44,7 +38,7 @@ public class ClientProxy {
             return in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+            throw new FailPassMessageToServerException("can`t receive message with log status", e);
         }
     }
 
@@ -55,7 +49,7 @@ public class ClientProxy {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+            throw new FailPassMessageToServerException("can`t send int message for logging to server", e);
         }
     }
 
@@ -66,7 +60,7 @@ public class ClientProxy {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+            throw new FailPassMessageToServerException("can`t send byte message for logging to server", e);
         }
     }
 
@@ -77,7 +71,7 @@ public class ClientProxy {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+            throw new FailPassMessageToServerException("can`t send char message for logging to server", e);
         }
     }
 
@@ -88,7 +82,7 @@ public class ClientProxy {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+            throw new FailPassMessageToServerException("can`t send boolean message for logging to server", e);
         }
     }
 
@@ -99,7 +93,7 @@ public class ClientProxy {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailPassMessageToServerException("can`t send message for logging to server", e);
+            throw new FailPassMessageToServerException("can`t string message for logging to server", e);
         }
     }
 
@@ -119,6 +113,7 @@ public class ClientProxy {
     public void close() throws ClientProxyException {
         try {
             out.close();
+            in.close();
             server.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -25,7 +25,7 @@ public class ByteCommand implements Command {
     }
 
     @Override
-    public Command accumulate(Command message) throws LogSaverException {
+    public Command accumulate(Command message) {
         int leftToTypeOverflow = Byte.MAX_VALUE - this.message;
         int messageValue = ((ByteCommand) message).message;
         if (leftToTypeOverflow < messageValue) {

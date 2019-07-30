@@ -25,7 +25,7 @@ public class IntCommand implements Command {
     }
 
     @Override
-    public Command accumulate(Command message) throws LogSaverException {
+    public Command accumulate(Command message) {
         int leftToTypeOverflow = Integer.MAX_VALUE - this.message;
         int messageValue = ((IntCommand) message).message;
         if (leftToTypeOverflow < messageValue) {

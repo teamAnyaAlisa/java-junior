@@ -11,7 +11,7 @@ public class LoggerController {
     private Command currentMessage = null;
     private LogSaver saver;
 
-    public LoggerController(LogSaver saver) throws NullSaverException{
+    public LoggerController(LogSaver saver) throws LogSaverException{
         if (saver == null) {
             throw new NullSaverException("saver can`t be null");
         }

@@ -13,7 +13,7 @@ public class Logger {
     static {
         try {
             loggerController = new LoggerController(logConsoleSaver);
-        } catch (NullSaverException e) {
+        } catch (LogSaverException e) {
             e.printStackTrace();
         }
     }

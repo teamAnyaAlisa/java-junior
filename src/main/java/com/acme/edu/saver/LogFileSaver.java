@@ -11,24 +11,24 @@ public class LogFileSaver implements LogSaver {
     // TODO: final
     private BufferedWriter outLogStream;
 
-    public LogFileSaver(String filePath) throws LogFileSaverException {
+    public LogFileSaver(String filePath) throws LogSaverException {
         this(filePath, "windows-1251");
     }
 
-    public LogFileSaver(String filePath, String fileEncoding) throws LogFileSaverException {
+    public LogFileSaver(String filePath, String fileEncoding) throws LogSaverException {
         if ((fileEncoding != null) && !fileEncoding.equals("")) {
             this.fileEncoding = fileEncoding;
         }
 
         if ((filePath == null) || filePath.equals("")) {
-            throw new LogFileSaverException("filepath should be not empty string!");
+            throw new LogFileSaverException("filepath should be not empty string");
         }
 
         this.filePath = new File(filePath);
         outLogStream = openFile();
     }
 
-    private BufferedWriter openFile() throws LogFileSaverException {
+    private BufferedWriter openFile() throws LogSaverException {
         BufferedWriter outLogStream = null;
         try {
              outLogStream = new BufferedWriter(
@@ -37,10 +37,10 @@ public class LogFileSaver implements LogSaver {
                                new FileOutputStream(filePath)), fileEncoding));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            throw new LogFileSaverException("can't log: file with given path is not found", e);
+            throw new LogFileSaverException("file with given path is not found", e);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            throw new LogFileSaverException("can't log: given encoding is not supported", e);
+            throw new LogFileSaverException("given encoding is not supported", e);
         }
         return outLogStream;
     }
@@ -57,7 +57,7 @@ public class LogFileSaver implements LogSaver {
     }
 
     @Override
-    public void close() throws LogFileSaverException {
+    public void close() throws LogSaverException {
         try {
             outLogStream.close();
         } catch (IOException e) {

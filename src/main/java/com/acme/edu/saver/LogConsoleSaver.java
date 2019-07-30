@@ -11,6 +11,5 @@ public class LogConsoleSaver implements LogSaver {
 
     @Override
     public void close() throws LogSaverException {
-
     }
 }

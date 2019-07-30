@@ -10,24 +10,19 @@ import java.net.Socket;
 
 public class AcceptorConnection {
     private int port;
-    private ServerSocket serverSocket;
     private Socket client;
+    private ServerSocket serverSocket;
     private BufferedReader clientInputStream;
     private BufferedWriter clientOutputStream;
 
-    public AcceptorConnection(int port) throws LoggerServerException {
-        this.port = port;
-        try {
-            serverSocket = new ServerSocket(this.port);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new FailRaiseServerListenerException("something went wrong with establishing server listener", e);
-        }
+    public AcceptorConnection(ServerSocket serverSocket) throws LoggerServerException {
+        this.serverSocket = serverSocket;
     }
 
     public void establishConnection() throws LoggerServerException {
         try {
             Socket client = serverSocket.accept();
+
             clientInputStream = new BufferedReader(
                                     new InputStreamReader(
                                         new BufferedInputStream(
@@ -38,7 +33,8 @@ public class AcceptorConnection {
                                              client.getOutputStream())));
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailEstablishConnectionException("something went wrong with establishing server listener", e);
+            close();
+            throw new FailEstablishConnectionException("can`t establish server connection to client", e);
         }
     }
 
@@ -47,7 +43,7 @@ public class AcceptorConnection {
             return clientInputStream.readLine();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailCreateClientReaderException("something went wrong with creating client reader", e);
+            throw new FailReceiveClientMessageException("can`t read client message", e);
         }
     }
 
@@ -58,19 +54,27 @@ public class AcceptorConnection {
             clientOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FailCreateClientWriterException("something went wrong with creating client writer", e);
+            throw new FailSendLogStatusToClientException("can`t send log execution status to client", e);
         }
     }
 
-    // TODO нормально обработать ошибки при закрытии
     public void close() throws LoggerServerException {
         try {
-            clientOutputStream.close();
-            clientInputStream.close();
-            client.close();
-            serverSocket.close();
+            if (clientOutputStream != null) {
+                clientOutputStream.close();
+            }
+            if (clientInputStream != null) {
+                clientInputStream.close();
+            }
+            if (client != null) {
+                client.close();
+            }
+            if (serverSocket != null) {
+                serverSocket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ShutdownServerException("can`t shutdown server", e);
         }
     }
 }

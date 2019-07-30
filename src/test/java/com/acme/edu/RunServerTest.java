@@ -12,7 +12,7 @@ import org.junit.Test;
 public class RunServerTest {
     @Test
     public void runServer() throws LoggerServerException, LogSaverException {
-        LoggerServer server = new LoggerServer(new AcceptorConnection(8080), new LogRequestHandler());
-        server.logClientMessages();
+        LoggerServer server = new LoggerServer(8080);
+        server.establishConnection();
     }
 }
