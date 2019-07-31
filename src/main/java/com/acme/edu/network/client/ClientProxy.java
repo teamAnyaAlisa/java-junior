@@ -15,6 +15,8 @@ public class ClientProxy {
     private BufferedWriter out;
     private BufferedReader in;
 
+    // TODO add clientId
+
     public ClientProxy(int port) throws ClientProxyException {
         try {
             server = new Socket("localhost", port);

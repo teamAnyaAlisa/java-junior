@@ -8,29 +8,22 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class AcceptorConnection {
+public class ClientConnectionService {
     private int port;
     private Socket client;
-    private ServerSocket serverSocket;
     private BufferedReader clientInputStream;
     private BufferedWriter clientOutputStream;
 
-    public AcceptorConnection(ServerSocket serverSocket) throws LoggerServerException {
-        this.serverSocket = serverSocket;
-    }
-
-    public void establishConnection() throws LoggerServerException {
+    public ClientConnectionService(Socket client) throws LoggerServerException {
         try {
-            Socket client = serverSocket.accept();
-
             clientInputStream = new BufferedReader(
-                                    new InputStreamReader(
-                                        new BufferedInputStream(
-                                            client.getInputStream())));
+                    new InputStreamReader(
+                            new BufferedInputStream(
+                                    client.getInputStream())));
             clientOutputStream = new BufferedWriter(
-                                     new OutputStreamWriter(
-                                         new BufferedOutputStream(
-                                             client.getOutputStream())));
+                    new OutputStreamWriter(
+                            new BufferedOutputStream(
+                                    client.getOutputStream())));
         } catch (IOException e) {
             e.printStackTrace();
             close();
@@ -65,12 +58,6 @@ public class AcceptorConnection {
             }
             if (clientInputStream != null) {
                 clientInputStream.close();
-            }
-            if (client != null) {
-                client.close();
-            }
-            if (serverSocket != null) {
-                serverSocket.close();
             }
         } catch (IOException e) {
             e.printStackTrace();

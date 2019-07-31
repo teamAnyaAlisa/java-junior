@@ -50,6 +50,7 @@ public class LogFileSaver implements LogSaver {
         try {
             outLogStream.write(message);
             outLogStream.newLine();
+            outLogStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
             throw new LogFileSaverException("fails writing to the given file", e);

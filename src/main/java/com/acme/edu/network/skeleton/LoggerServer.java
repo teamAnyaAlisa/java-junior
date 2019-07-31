@@ -1,26 +1,26 @@
 package com.acme.edu.network.skeleton;
 
-import com.acme.edu.command.Command;
-import com.acme.edu.command.FlushCommand;
 import com.acme.edu.customExceptions.LogSaverException;
 import com.acme.edu.customExceptions.server.FailRaiseServerException;
 import com.acme.edu.customExceptions.server.LoggerServerException;
 import com.acme.edu.logger.LoggerController;
 import com.acme.edu.saver.LogConsoleSaver;
+import com.acme.edu.saver.LogFileSaver;
 import com.acme.edu.saver.LogSaver;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class LoggerServer {
-    private AcceptorConnection acceptorConnection;
-    private LogRequestHandler logRequestHandler;
     private ServerSocket serverSocket;
-    private static LogSaver logSaver = new LogConsoleSaver();
+
+    private static LogSaver logSaver;
     private static LoggerController loggerController;
 
     static {
         try {
+            logSaver = new LogFileSaver("test.txt");
             loggerController = new LoggerController(logSaver);
         } catch (LogSaverException e) {
             e.printStackTrace();
@@ -34,52 +34,34 @@ public class LoggerServer {
             e.printStackTrace();
             throw new FailRaiseServerException("something went wrong with raise server", e);
         }
-        this.acceptorConnection = new AcceptorConnection(serverSocket);
-        this.logRequestHandler = new LogRequestHandler();
     }
 
     public void establishConnection() {
         while (true) {
             try {
-                this.acceptorConnection.establishConnection();
-                logClientMessages();
-            } catch (LoggerServerException e) {
+                Socket client = serverSocket.accept();
+                ClientLoggingSession clientLoggingSession = new ClientLoggingSession(client, loggerController);
+                clientLoggingSession.start();
+            } catch (LoggerServerException | IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void logClientMessages() {
-        String loggingExecutionStatus = "Message logged successfully";
-
+    public void close() {
         try {
-            while (true) {
-                String messageClientRepresentation = acceptorConnection.getClientLogMessage();
-                Command messageInternalRepresentation = logRequestHandler.parseClientMessage(messageClientRepresentation);
-                try {
-                    if (messageInternalRepresentation instanceof FlushCommand) {
-                        loggerController.flush();
-                    } else {
-                        loggerController.log(messageInternalRepresentation);
-                    }
-                } catch (LogSaverException e) {
-                    loggingExecutionStatus = e.getMessage();
-                }
-
-                acceptorConnection.passCommandExecutionStatus(loggingExecutionStatus);
-                loggingExecutionStatus = "Message logged successfully";
+            if (serverSocket != null) {
+                serverSocket.close();
             }
-        } catch (Exception e) {
-            System.out.println("Client closed connection");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    public void close() throws LogSaverException, LoggerServerException {
-        if (acceptorConnection != null) {
-            acceptorConnection.close();
-        }
-        if (loggerController != null) {
-            loggerController.close();
+        try {
+            if (loggerController != null) {
+                loggerController.close();
+            }
+        } catch (LogSaverException e) {
+            e.printStackTrace();
         }
     }
 }

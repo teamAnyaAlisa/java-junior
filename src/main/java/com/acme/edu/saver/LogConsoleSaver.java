@@ -7,6 +7,7 @@ public class LogConsoleSaver implements LogSaver {
     @Override
     public void save(String message){
         System.out.println(message);
+        System.out.flush();
     }
 
     @Override
